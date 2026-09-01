@@ -22,22 +22,6 @@ const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 const URL_SITIO = "https://wolfshowcars.onrender.com";
 
 // =====================================================
-// VALIDAR VARIABLES DE ENTORNO
-// =====================================================
-
-if (!SUPABASE_URL) {
-console.error("ERROR: falta SUPABASE_URL");
-}
-
-if (!SUPABASE_KEY) {
-console.error("ERROR: falta SUPABASE_KEY");
-}
-
-if (!MP_ACCESS_TOKEN) {
-console.error("ERROR: falta MP_ACCESS_TOKEN");
-}
-
-// =====================================================
 // SUPABASE
 // =====================================================
 
@@ -58,11 +42,9 @@ app.use(express.static(ROOT));
 
 app.get("/", function (req, res) {
 
-```
 res.sendFile(
     path.join(ROOT, "index.html")
 );
-```
 
 });
 
@@ -72,21 +54,18 @@ res.sendFile(
 
 app.get("/pago-exitoso.html", function (req, res) {
 
-```
 res.sendFile(
     path.join(ROOT, "pago-exitoso.html")
 );
-```
 
 });
 
 // =====================================================
-// API — ESTADO DEL SERVIDOR
+// API — ESTADO
 // =====================================================
 
 app.get("/api/estado", function (req, res) {
 
-```
 res.json({
 
     ok: true,
@@ -98,7 +77,6 @@ res.json({
     fecha: new Date().toISOString()
 
 });
-```
 
 });
 
@@ -108,13 +86,11 @@ res.json({
 
 function generarNumeroAcreditacion() {
 
-```
 return "WSC27-" +
     Math.floor(
         100000 +
         Math.random() * 900000
     );
-```
 
 }
 
@@ -124,7 +100,6 @@ return "WSC27-" +
 
 function generarCodigoSeguridad() {
 
-```
 const caracteres =
     "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -142,7 +117,6 @@ for (let i = 0; i < 10; i++) {
 }
 
 return codigo;
-```
 
 }
 
@@ -154,8 +128,9 @@ app.post(
 "/api/acreditaciones",
 async function (req, res) {
 
-```
     try {
+
+        const datos = req.body;
 
         console.log(
             "=========================================="
@@ -165,9 +140,9 @@ async function (req, res) {
             "NUEVA SOLICITUD DE ACREDITACIÓN"
         );
 
-        const datos = req.body;
-
-        console.log(datos);
+        console.log(
+            datos
+        );
 
         // =================================================
         // CAMPOS OBLIGATORIOS
@@ -212,7 +187,9 @@ async function (req, res) {
         // =================================================
 
         const acompanantes =
-            Number(datos.acompanantes || 0);
+            Number(
+                datos.acompanantes || 0
+            );
 
         if (
             !Number.isInteger(acompanantes) ||
@@ -260,73 +237,92 @@ async function (req, res) {
         // =================================================
 
         const nombre =
-            String(datos.nombre).trim();
+            String(
+                datos.nombre
+            ).trim();
 
         const dni =
-            String(datos.dni).trim();
+            String(
+                datos.dni
+            ).trim();
 
         const telefono =
-            String(datos.telefono).trim();
+            String(
+                datos.telefono
+            ).trim();
 
         const instagram =
-            String(datos.instagram).trim();
+            String(
+                datos.instagram
+            ).trim();
 
         const marca =
-            String(datos.marca).trim();
+            String(
+                datos.marca
+            ).trim();
 
         const modelo =
-            String(datos.modelo).trim();
+            String(
+                datos.modelo
+            ).trim();
 
         const anio =
-            String(datos.anio).trim();
+            String(
+                datos.anio
+            ).trim();
 
         const patente =
-            String(datos.patente)
+            String(
+                datos.patente
+            )
                 .trim()
                 .toUpperCase();
 
         // =================================================
-        // GUARDAR ACREDITACIÓN EN SUPABASE
+        // GUARDAR EN SUPABASE
         // =================================================
 
         const { data, error } =
             await supabase
                 .from("acreditaciones")
-                .insert([
+                .insert([{
 
-                    {
+                    numero_acreditacion:
+                        numeroAcreditacion,
 
-                        numero_acreditacion:
-                            numeroAcreditacion,
+                    codigo_seguridad:
+                        codigoSeguridad,
 
-                        codigo_seguridad:
-                            codigoSeguridad,
+                    nombre,
 
-                        nombre,
-                        dni,
-                        telefono,
-                        instagram,
-                        marca,
-                        modelo,
-                        anio,
-                        patente,
+                    dni,
 
-                        acompanantes,
+                    telefono,
 
-                        precio_auto:
-                            precioAuto,
+                    instagram,
 
-                        precio_acompanante:
-                            precioAcompanante,
+                    marca,
 
-                        total,
+                    modelo,
 
-                        estado:
-                            "PENDIENTE_PAGO"
+                    anio,
 
-                    }
+                    patente,
 
-                ])
+                    acompanantes,
+
+                    precio_auto:
+                        precioAuto,
+
+                    precio_acompanante:
+                        precioAcompanante,
+
+                    total,
+
+                    estado:
+                        "PENDIENTE_PAGO"
+
+                }])
                 .select()
                 .single();
 
@@ -337,10 +333,9 @@ async function (req, res) {
         if (error) {
 
             console.error(
-                "ERROR SUPABASE:"
+                "ERROR SUPABASE:",
+                error
             );
-
-            console.error(error);
 
             return res.status(500).json({
 
@@ -357,39 +352,54 @@ async function (req, res) {
         }
 
         // =================================================
+        // VERIFICAR MERCADO PAGO
+        // =================================================
+
+        if (!MP_ACCESS_TOKEN) {
+
+            console.error(
+                "MP_ACCESS_TOKEN no está configurado."
+            );
+
+            return res.status(500).json({
+
+                ok: false,
+
+                mensaje:
+                    "Mercado Pago no está configurado correctamente."
+
+            });
+
+        }
+
+        // =================================================
         // CREAR PREFERENCIA DE MERCADO PAGO
         // =================================================
 
-        console.log(
-            "CREANDO PREFERENCIA DE MERCADO PAGO..."
-        );
-
         const preferencia = {
 
-            items: [
+            items: [{
 
-                {
+                id:
+                    numeroAcreditacion,
 
-                    id:
-                        numeroAcreditacion,
+                title:
+                    "Acreditación WOLF SHOWCARS 2027",
 
-                    title:
-                        "Acreditación WOLF SHOWCARS 2027",
+                description:
+                    "Ingreso de vehículo + " +
+                    acompanantes +
+                    " acompañante(s)",
 
-                    description:
-                        "Ingreso de vehículo + " +
-                        acompanantes +
-                        " acompañante(s)",
+                quantity: 1,
 
-                    quantity: 1,
+                currency_id:
+                    "ARS",
 
-                    currency_id: "ARS",
+                unit_price:
+                    total
 
-                    unit_price: total
-
-                }
-
-            ],
+            }],
 
             external_reference:
                 numeroAcreditacion,
@@ -418,6 +428,10 @@ async function (req, res) {
                 "/api/mercadopago/webhook"
 
         };
+
+        // =================================================
+        // SOLICITAR PREFERENCIA A MERCADO PAGO
+        // =================================================
 
         const respuestaMercadoPago =
             await fetch(
@@ -455,10 +469,7 @@ async function (req, res) {
         if (!respuestaMercadoPago.ok) {
 
             console.error(
-                "ERROR MERCADO PAGO:"
-            );
-
-            console.error(
+                "ERROR MERCADO PAGO:",
                 resultadoMercadoPago
             );
 
@@ -467,7 +478,7 @@ async function (req, res) {
                 ok: false,
 
                 mensaje:
-                    "La acreditación fue creada, pero no se pudo generar el pago de Mercado Pago.",
+                    "No se pudo generar el pago de Mercado Pago.",
 
                 error:
                     resultadoMercadoPago
@@ -477,29 +488,27 @@ async function (req, res) {
         }
 
         // =================================================
-        // DATOS DE MERCADO PAGO
+        // RESPUESTA
         // =================================================
 
-        const preferenceId =
-            resultadoMercadoPago.id;
-
-        const initPoint =
-            resultadoMercadoPago.init_point;
-
-        const sandboxInitPoint =
-            resultadoMercadoPago.sandbox_init_point;
-
         console.log(
-            "PREFERENCIA MERCADO PAGO:"
+            "ACREDITACIÓN CREADA:",
+            numeroAcreditacion
         );
 
         console.log(
-            preferenceId
+            "PREFERENCIA MERCADO PAGO:",
+            resultadoMercadoPago.id
         );
 
-        // =================================================
-        // RESPUESTA FINAL
-        // =================================================
+        console.log(
+            "TOTAL:",
+            total
+        );
+
+        console.log(
+            "=========================================="
+        );
 
         return res.status(201).json({
 
@@ -513,22 +522,28 @@ async function (req, res) {
                 id:
                     data.id,
 
-                numeroAcreditacion:
-                    numeroAcreditacion,
+                numeroAcreditacion,
 
-                codigoSeguridad:
-                    codigoSeguridad,
+                codigoSeguridad,
 
                 datos: {
 
                     nombre,
+
                     dni,
+
                     telefono,
+
                     instagram,
+
                     marca,
+
                     modelo,
+
                     anio,
+
                     patente,
+
                     acompanantes
 
                 },
@@ -547,16 +562,13 @@ async function (req, res) {
             mercadoPago: {
 
                 preferenceId:
-
-                    preferenceId,
+                    resultadoMercadoPago.id,
 
                 initPoint:
-
-                    initPoint,
+                    resultadoMercadoPago.init_point,
 
                 sandboxInitPoint:
-
-                    sandboxInitPoint
+                    resultadoMercadoPago.sandbox_init_point
 
             }
 
@@ -565,10 +577,9 @@ async function (req, res) {
     } catch (error) {
 
         console.error(
-            "ERROR GENERAL DEL SERVIDOR:"
+            "ERROR GENERAL:",
+            error
         );
-
-        console.error(error);
 
         return res.status(500).json({
 
@@ -585,7 +596,6 @@ async function (req, res) {
     }
 
 }
-```
 
 );
 
@@ -597,7 +607,6 @@ app.post(
 "/api/mercadopago/webhook",
 async function (req, res) {
 
-```
     try {
 
         console.log(
@@ -616,18 +625,14 @@ async function (req, res) {
             )
         );
 
-        // Mercado Pago puede enviar
-        // diferentes tipos de notificación.
+        let paymentId = null;
 
-        const tipo =
-            req.body.type ||
-            req.body.topic;
-
-        let paymentId =
-            null;
+        // =================================================
+        // OBTENER PAYMENT ID
+        // =================================================
 
         if (
-            tipo === "payment" &&
+            req.body &&
             req.body.data &&
             req.body.data.id
         ) {
@@ -652,14 +657,10 @@ async function (req, res) {
 
         }
 
-        // =================================================
-        // SI NO ES UNA NOTIFICACIÓN DE PAGO
-        // =================================================
-
         if (!paymentId) {
 
             console.log(
-                "Webhook recibido sin payment ID."
+                "Webhook sin payment ID."
             );
 
             return res.sendStatus(200);
@@ -667,7 +668,7 @@ async function (req, res) {
         }
 
         // =================================================
-        // CONSULTAR PAGO DIRECTAMENTE A MERCADO PAGO
+        // CONSULTAR PAGO EN MERCADO PAGO
         // =================================================
 
         const respuestaPago =
@@ -698,28 +699,13 @@ async function (req, res) {
         if (!respuestaPago.ok) {
 
             console.error(
-                "No se pudo consultar el pago:"
-            );
-
-            console.error(
+                "ERROR CONSULTANDO PAGO:",
                 pago
             );
 
             return res.sendStatus(200);
 
         }
-
-        console.log(
-            "PAGO MERCADO PAGO:"
-        );
-
-        console.log(
-            JSON.stringify(
-                pago,
-                null,
-                2
-            )
-        );
 
         // =================================================
         // OBTENER ACREDITACIÓN
@@ -739,60 +725,52 @@ async function (req, res) {
         }
 
         // =================================================
-        // ESTADO DEL PAGO
-        // =================================================
-
-        const estadoPago =
-            pago.status;
-
-        console.log(
-            "ESTADO DEL PAGO:",
-            estadoPago
-        );
-
-        // =================================================
-        // ACTUALIZAR SUPABASE
+        // DETERMINAR ESTADO
         // =================================================
 
         let nuevoEstado =
             "PENDIENTE_PAGO";
 
         if (
-            estadoPago === "approved"
+            pago.status === "approved"
         ) {
 
             nuevoEstado =
                 "PAGADO";
 
         } else if (
-            estadoPago === "rejected"
+            pago.status === "rejected"
         ) {
 
             nuevoEstado =
                 "PAGO_RECHAZADO";
 
         } else if (
-            estadoPago === "cancelled"
+            pago.status === "cancelled"
         ) {
 
             nuevoEstado =
                 "PAGO_CANCELADO";
 
         } else if (
-            estadoPago === "refunded"
+            pago.status === "refunded"
         ) {
 
             nuevoEstado =
                 "DEVUELTO";
 
         } else if (
-            estadoPago === "charged_back"
+            pago.status === "charged_back"
         ) {
 
             nuevoEstado =
                 "CONTRACARGO";
 
         }
+
+        // =================================================
+        // ACTUALIZAR SUPABASE
+        // =================================================
 
         const { error } =
             await supabase
@@ -814,25 +792,21 @@ async function (req, res) {
         if (error) {
 
             console.error(
-                "ERROR ACTUALIZANDO SUPABASE:"
+                "ERROR ACTUALIZANDO SUPABASE:",
+                error
             );
-
-            console.error(error);
 
             return res.sendStatus(200);
 
         }
 
         console.log(
-            "ACREDITACIÓN ACTUALIZADA:"
-        );
-
-        console.log(
+            "ACREDITACIÓN ACTUALIZADA:",
             numeroAcreditacion
         );
 
         console.log(
-            "NUEVO ESTADO:",
+            "ESTADO:",
             nuevoEstado
         );
 
@@ -845,21 +819,15 @@ async function (req, res) {
     } catch (error) {
 
         console.error(
-            "ERROR WEBHOOK:"
+            "ERROR WEBHOOK:",
+            error
         );
-
-        console.error(error);
-
-        // Respondemos 200 para evitar
-        // reintentos innecesarios mientras
-        // diagnosticamos el problema.
 
         return res.sendStatus(200);
 
     }
 
 }
-```
 
 );
 
@@ -871,13 +839,12 @@ app.listen(
 PORT,
 function () {
 
-```
     console.log(
         "=========================================="
     );
 
     console.log(
-        " WOLF SHOWCARS — SERVIDOR"
+        "WOLF SHOWCARS — SERVIDOR"
     );
 
     console.log(
@@ -888,10 +855,18 @@ function () {
         "Servidor funcionando en puerto:"
     );
 
-    console.log(PORT);
+    console.log(
+        PORT
+    );
 
     console.log(
-        "Supabase conectado."
+        "Supabase:"
+    );
+
+    console.log(
+        SUPABASE_URL
+            ? "CONFIGURADO"
+            : "NO CONFIGURADO"
     );
 
     console.log(
@@ -908,13 +883,13 @@ function () {
         "Directorio raíz:"
     );
 
-    console.log(ROOT);
+    console.log(
+        ROOT
+    );
 
     console.log(
         "=========================================="
     );
 
 }
-```
-
 );
