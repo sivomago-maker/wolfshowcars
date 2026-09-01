@@ -1,4 +1,5 @@
-```javascript
+﻿require("dotenv").config({ path: require("path").join(__dirname, "..", ".env") });
+
 const express = require("express");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
@@ -8,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 // =====================================================
-// CONFIGURACIÓN
+// CONFIGURACIÃ“N
 // =====================================================
 
 const ROOT = process.cwd();
@@ -23,19 +24,19 @@ const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
 const URL_SITIO = "https://wolfshowcars.onrender.com";
 
 // =====================================================
-// VERIFICAR CONFIGURACIÓN
+// VERIFICAR CONFIGURACIÃ“N
 // =====================================================
 
 if (!SUPABASE_URL) {
-    console.error("❌ ERROR: SUPABASE_URL no está configurado.");
+    console.error("âŒ ERROR: SUPABASE_URL no estÃ¡ configurado.");
 }
 
 if (!SUPABASE_KEY) {
-    console.error("❌ ERROR: SUPABASE_KEY no está configurado.");
+    console.error("âŒ ERROR: SUPABASE_KEY no estÃ¡ configurado.");
 }
 
 if (!MP_ACCESS_TOKEN) {
-    console.error("❌ ERROR: MP_ACCESS_TOKEN no está configurado.");
+    console.error("âŒ ERROR: MP_ACCESS_TOKEN no estÃ¡ configurado.");
 }
 
 // =====================================================
@@ -54,7 +55,7 @@ const supabase = createClient(
 app.use(express.static(ROOT));
 
 // =====================================================
-// PÁGINA PRINCIPAL
+// PÃGINA PRINCIPAL
 // =====================================================
 
 app.get("/", function (req, res) {
@@ -66,7 +67,7 @@ app.get("/", function (req, res) {
 });
 
 // =====================================================
-// PÁGINA PAGO EXITOSO
+// PÃGINA PAGO EXITOSO
 // =====================================================
 
 app.get("/pago-exitoso.html", function (req, res) {
@@ -78,7 +79,7 @@ app.get("/pago-exitoso.html", function (req, res) {
 });
 
 // =====================================================
-// API — ESTADO
+// API â€” ESTADO
 // =====================================================
 
 app.get("/api/estado", function (req, res) {
@@ -98,7 +99,7 @@ app.get("/api/estado", function (req, res) {
 });
 
 // =====================================================
-// GENERAR NÚMERO DE ACREDITACIÓN
+// GENERAR NÃšMERO DE ACREDITACIÃ“N
 // =====================================================
 
 function generarNumeroAcreditacion() {
@@ -112,7 +113,7 @@ function generarNumeroAcreditacion() {
 }
 
 // =====================================================
-// GENERAR CÓDIGO DE SEGURIDAD
+// GENERAR CÃ“DIGO DE SEGURIDAD
 // =====================================================
 
 function generarCodigoSeguridad() {
@@ -138,7 +139,7 @@ function generarCodigoSeguridad() {
 }
 
 // =====================================================
-// API — CREAR ACREDITACIÓN
+// API â€” CREAR ACREDITACIÃ“N
 // =====================================================
 
 app.post(
@@ -154,7 +155,7 @@ app.post(
             );
 
             console.log(
-                "NUEVA SOLICITUD DE ACREDITACIÓN"
+                "NUEVA SOLICITUD DE ACREDITACIÃ“N"
             );
 
             console.log(
@@ -205,7 +206,7 @@ app.post(
             }
 
             // =================================================
-            // ACOMPAÑANTES
+            // ACOMPAÃ‘ANTES
             // =================================================
 
             const acompanantes =
@@ -225,7 +226,7 @@ app.post(
                     ok: false,
 
                     mensaje:
-                        "La cantidad de acompañantes no es válida."
+                        "La cantidad de acompaÃ±antes no es vÃ¡lida."
 
                 });
 
@@ -360,7 +361,7 @@ app.post(
             if (error) {
 
                 console.error(
-                    "❌ ERROR SUPABASE:",
+                    "âŒ ERROR SUPABASE:",
                     error
                 );
 
@@ -369,7 +370,7 @@ app.post(
                     ok: false,
 
                     mensaje:
-                        "No se pudo guardar la acreditación en la base de datos.",
+                        "No se pudo guardar la acreditaciÃ³n en la base de datos.",
 
                     error:
                         error.message
@@ -385,7 +386,7 @@ app.post(
             if (!MP_ACCESS_TOKEN) {
 
                 console.error(
-                    "❌ MP_ACCESS_TOKEN no está configurado."
+                    "âŒ MP_ACCESS_TOKEN no estÃ¡ configurado."
                 );
 
                 return res.status(500).json({
@@ -393,7 +394,7 @@ app.post(
                     ok: false,
 
                     mensaje:
-                        "Mercado Pago no está configurado correctamente."
+                        "Mercado Pago no estÃ¡ configurado correctamente."
 
                 });
 
@@ -411,12 +412,12 @@ app.post(
                         numeroAcreditacion,
 
                     title:
-                        "Acreditación WOLF SHOWCARS 2027",
+                        "AcreditaciÃ³n WOLF SHOWCARS 2027",
 
                     description:
-                        "Ingreso de vehículo + " +
+                        "Ingreso de vehÃ­culo + " +
                         acompanantes +
-                        " acompañante(s)",
+                        " acompaÃ±ante(s)",
 
                     quantity: 1,
 
@@ -503,7 +504,7 @@ app.post(
             ) {
 
                 console.error(
-                    "❌ ERROR MERCADO PAGO:",
+                    "âŒ ERROR MERCADO PAGO:",
                     resultadoMercadoPago
                 );
 
@@ -531,7 +532,7 @@ app.post(
             ) {
 
                 console.error(
-                    "❌ Mercado Pago no devolvió correctamente la preferencia:",
+                    "âŒ Mercado Pago no devolviÃ³ correctamente la preferencia:",
                     resultadoMercadoPago
                 );
 
@@ -540,7 +541,7 @@ app.post(
                     ok: false,
 
                     mensaje:
-                        "Mercado Pago no devolvió correctamente el enlace de pago."
+                        "Mercado Pago no devolviÃ³ correctamente el enlace de pago."
 
                 });
 
@@ -555,7 +556,7 @@ app.post(
             );
 
             console.log(
-                "✅ ACREDITACIÓN CREADA:",
+                "âœ… ACREDITACIÃ“N CREADA:",
                 numeroAcreditacion
             );
 
@@ -578,7 +579,7 @@ app.post(
                 ok: true,
 
                 mensaje:
-                    "Acreditación creada correctamente.",
+                    "AcreditaciÃ³n creada correctamente.",
 
                 acreditacion: {
 
@@ -644,7 +645,7 @@ app.post(
             );
 
             console.error(
-                "❌ ERROR GENERAL:"
+                "âŒ ERROR GENERAL:"
             );
 
             console.error(
@@ -660,7 +661,7 @@ app.post(
                 ok: false,
 
                 mensaje:
-                    "Ocurrió un error interno en el servidor.",
+                    "OcurriÃ³ un error interno en el servidor.",
 
                 error:
                     error.message
@@ -824,7 +825,7 @@ app.post(
             ) {
 
                 console.error(
-                    "❌ ERROR CONSULTANDO PAGO:",
+                    "âŒ ERROR CONSULTANDO PAGO:",
                     pago
                 );
 
@@ -838,7 +839,7 @@ app.post(
             );
 
             // =================================================
-            // OBTENER ACREDITACIÓN
+            // OBTENER ACREDITACIÃ“N
             // =================================================
 
             const numeroAcreditacion =
@@ -847,7 +848,7 @@ app.post(
             if (!numeroAcreditacion) {
 
                 console.error(
-                    "❌ El pago no tiene external_reference."
+                    "âŒ El pago no tiene external_reference."
                 );
 
                 return res.sendStatus(200);
@@ -954,7 +955,7 @@ app.post(
             if (error) {
 
                 console.error(
-                    "❌ ERROR ACTUALIZANDO SUPABASE:",
+                    "âŒ ERROR ACTUALIZANDO SUPABASE:",
                     error
                 );
 
@@ -971,7 +972,7 @@ app.post(
             );
 
             console.log(
-                "✅ ACREDITACIÓN ACTUALIZADA:",
+                "âœ… ACREDITACIÃ“N ACTUALIZADA:",
                 numeroAcreditacion
             );
 
@@ -998,7 +999,7 @@ app.post(
             );
 
             console.error(
-                "❌ ERROR WEBHOOK:"
+                "âŒ ERROR WEBHOOK:"
             );
 
             console.error(
@@ -1033,7 +1034,7 @@ app.listen(
         );
 
         console.log(
-            "WOLF SHOWCARS — SERVIDOR"
+            "WOLF SHOWCARS â€” SERVIDOR"
         );
 
         console.log(
@@ -1069,7 +1070,7 @@ app.listen(
         );
 
         console.log(
-            "Directorio raíz:"
+            "Directorio raÃ­z:"
         );
 
         console.log(
@@ -1082,4 +1083,4 @@ app.listen(
 
     }
 );
-```
+
