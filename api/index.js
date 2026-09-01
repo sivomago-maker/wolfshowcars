@@ -1,3 +1,4 @@
+```javascript
 const express = require("express");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
@@ -16,14 +17,16 @@ const supabase = createClient(
 );
 
 // =====================================================
+// RUTA PRINCIPAL DEL PROYECTO
+// =====================================================
+
+const ROOT = process.cwd();
+
+// =====================================================
 // ARCHIVOS DEL SITIO
 // =====================================================
 
-app.use(
-    express.static(
-        path.join(__dirname, "..", "..")
-    )
-);
+app.use(express.static(ROOT));
 
 // =====================================================
 // PÁGINA PRINCIPAL
@@ -32,12 +35,19 @@ app.use(
 app.get("/", function (req, res) {
 
     res.sendFile(
-        path.join(
-            __dirname,
-            "..",
-            "..",
-            "index.html"
-        )
+        path.join(ROOT, "index.html")
+    );
+
+});
+
+// =====================================================
+// PÁGINA PAGO EXITOSO
+// =====================================================
+
+app.get("/pago-exitoso.html", function (req, res) {
+
+    res.sendFile(
+        path.join(ROOT, "pago-exitoso.html")
     );
 
 });
@@ -52,14 +62,11 @@ app.get("/api/estado", function (req, res) {
 
         ok: true,
 
-        servidor:
-            "WOLF SHOWCARS",
+        servidor: "WOLF SHOWCARS",
 
-        estado:
-            "FUNCIONANDO",
+        estado: "FUNCIONANDO",
 
-        fecha:
-            new Date().toISOString()
+        fecha: new Date().toISOString()
 
     });
 
@@ -92,13 +99,12 @@ function generarCodigoSeguridad() {
 
     for (let i = 0; i < 10; i++) {
 
-        codigo +=
-            caracteres.charAt(
-                Math.floor(
-                    Math.random() *
-                    caracteres.length
-                )
-            );
+        codigo += caracteres.charAt(
+            Math.floor(
+                Math.random() *
+                caracteres.length
+            )
+        );
 
     }
 
@@ -128,14 +134,10 @@ app.post(
                 req.body
             );
 
-            // =================================================
-            // DATOS RECIBIDOS
-            // =================================================
-
             const datos = req.body;
 
             // =================================================
-            // VALIDACIÓN
+            // CAMPOS OBLIGATORIOS
             // =================================================
 
             const camposObligatorios = [
@@ -225,50 +227,34 @@ app.post(
                 generarCodigoSeguridad();
 
             // =================================================
-            // DATOS LIMPIOS
+            // LIMPIAR DATOS
             // =================================================
 
             const nombre =
-                String(
-                    datos.nombre
-                ).trim();
+                String(datos.nombre).trim();
 
             const dni =
-                String(
-                    datos.dni
-                ).trim();
+                String(datos.dni).trim();
 
             const telefono =
-                String(
-                    datos.telefono
-                ).trim();
+                String(datos.telefono).trim();
 
             const instagram =
-                String(
-                    datos.instagram
-                ).trim();
+                String(datos.instagram).trim();
 
             const marca =
-                String(
-                    datos.marca
-                ).trim();
+                String(datos.marca).trim();
 
             const modelo =
-                String(
-                    datos.modelo
-                ).trim();
+                String(datos.modelo).trim();
 
             const anio =
-                String(
-                    datos.anio
-                ).trim();
+                String(datos.anio).trim();
 
             const patente =
-                String(
-                    datos.patente
-                )
-                .trim()
-                .toUpperCase();
+                String(datos.patente)
+                    .trim()
+                    .toUpperCase();
 
             // =================================================
             // GUARDAR EN SUPABASE
@@ -287,32 +273,16 @@ app.post(
                             codigo_seguridad:
                                 codigoSeguridad,
 
-                            nombre:
-                                nombre,
+                            nombre,
+                            dni,
+                            telefono,
+                            instagram,
+                            marca,
+                            modelo,
+                            anio,
+                            patente,
 
-                            dni:
-                                dni,
-
-                            telefono:
-                                telefono,
-
-                            instagram:
-                                instagram,
-
-                            marca:
-                                marca,
-
-                            modelo:
-                                modelo,
-
-                            anio:
-                                anio,
-
-                            patente:
-                                patente,
-
-                            acompanantes:
-                                acompanantes,
+                            acompanantes,
 
                             precio_auto:
                                 precioAuto,
@@ -320,8 +290,7 @@ app.post(
                             precio_acompanante:
                                 precioAcompanante,
 
-                            total:
-                                total,
+                            total,
 
                             estado:
                                 "PENDIENTE_PAGO"
@@ -342,9 +311,7 @@ app.post(
                     "ERROR SUPABASE:"
                 );
 
-                console.error(
-                    error
-                );
+                console.error(error);
 
                 return res.status(500).json({
 
@@ -361,56 +328,34 @@ app.post(
             }
 
             // =================================================
-            // ACREDITACIÓN CREADA
+            // ACREDITACIÓN
             // =================================================
 
             const acreditacion = {
 
-                numeroAcreditacion:
-                    numeroAcreditacion,
+                numeroAcreditacion,
 
-                codigoSeguridad:
-                    codigoSeguridad,
+                codigoSeguridad,
 
                 datos: {
 
-                    nombre:
-                        nombre,
-
-                    dni:
-                        dni,
-
-                    telefono:
-                        telefono,
-
-                    instagram:
-                        instagram,
-
-                    marca:
-                        marca,
-
-                    modelo:
-                        modelo,
-
-                    anio:
-                        anio,
-
-                    patente:
-                        patente,
-
-                    acompanantes:
-                        acompanantes
+                    nombre,
+                    dni,
+                    telefono,
+                    instagram,
+                    marca,
+                    modelo,
+                    anio,
+                    patente,
+                    acompanantes
 
                 },
 
-                precioAuto:
-                    precioAuto,
+                precioAuto,
 
-                precioAcompanante:
-                    precioAcompanante,
+                precioAcompanante,
 
-                total:
-                    total,
+                total,
 
                 estado:
                     "PENDIENTE_PAGO"
@@ -440,10 +385,14 @@ app.post(
                 total
             );
 
-            console.log(
-                "ID SUPABASE:",
-                data.id
-            );
+            if (data) {
+
+                console.log(
+                    "ID SUPABASE:",
+                    data.id
+                );
+
+            }
 
             console.log(
                 "=========================================="
@@ -460,8 +409,7 @@ app.post(
                 mensaje:
                     "Acreditación creada correctamente.",
 
-                acreditacion:
-                    acreditacion
+                acreditacion
 
             });
 
@@ -471,9 +419,7 @@ app.post(
                 "ERROR GENERAL DEL SERVIDOR:"
             );
 
-            console.error(
-                error
-            );
+            console.error(error);
 
             return res.status(500).json({
 
@@ -493,7 +439,7 @@ app.post(
 );
 
 // =====================================================
-// INICIAR SERVIDOR PARA RENDER
+// INICIAR SERVIDOR
 // =====================================================
 
 const PORT =
@@ -519,13 +465,17 @@ app.listen(
             "Servidor funcionando en puerto:"
         );
 
-        console.log(
-            PORT
-        );
+        console.log(PORT);
 
         console.log(
             "Supabase conectado."
         );
+
+        console.log(
+            "Directorio raíz:"
+        );
+
+        console.log(ROOT);
 
         console.log(
             "=========================================="
@@ -533,3 +483,4 @@ app.listen(
 
     }
 );
+```
