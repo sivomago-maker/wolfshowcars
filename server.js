@@ -1,3094 +1,2203 @@
-```html
-<!DOCTYPE html>
-<html lang="es">
+require("dotenv").config();
 
-<head>
+const express = require("express");
+const path = require("path");
+const crypto = require("crypto");
 
-    <meta charset="UTF-8">
+const { createClient } = require("@supabase/supabase-js");
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+const {
+    MercadoPagoConfig,
+    Preference
+} = require("mercadopago");
 
-    <title>WOLF SHOWCARS 2027</title>
+const app = express();
 
-    <meta
-        name="description"
-        content="WOLF SHOWCARS 2027 - 27 y 28 de febrero en Roque Pérez."
-    >
+app.disable("x-powered-by");
 
-    <link
-        rel="stylesheet"
-        href="css/estilos.css"
-    >
+// =====================================================
+// CONFIGURACIÓN
+// =====================================================
 
-    <!-- Librería para generar QR -->
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-    ></script>
+const PORT =
+    Number(process.env.PORT) || 3000;
 
-</head>
+const URL_PUBLICA =
+    (
+        process.env.PUBLIC_URL ||
+        `http://localhost:${PORT}`
+    ).replace(/\/+$/, "");
 
+// =====================================================
+// VARIABLES DE ENTORNO
+// =====================================================
 
-<body>
+const variablesObligatorias = [
+    "SUPABASE_URL",
+    "SUPABASE_KEY",
+    "MP_ACCESS_TOKEN",
+    "MP_WEBHOOK_SECRET"
+];
 
+const variablesFaltantes =
+    variablesObligatorias.filter(
+        function (variable) {
+            return !process.env[variable];
+        }
+    );
 
-    <!-- =====================================================
-         ENCABEZADO
-    ====================================================== -->
+if (variablesFaltantes.length > 0) {
 
-    <header class="encabezado">
+    console.error(
+        "=========================================="
+    );
 
-        <a
-            href="#inicio"
-            class="logo"
-            aria-label="Wolf Show Cars - Inicio"
-        >
+    console.error(
+        "ERROR: FALTAN VARIABLES DE ENTORNO"
+    );
 
-            <img
-                src="./img/logo/wolf-logo.png"
-                alt="Wolf Show Cars"
-            >
+    console.error(
+        variablesFaltantes
+    );
 
-        </a>
+    console.error(
+        "=========================================="
+    );
 
+    process.exit(1);
+}
 
-        <nav class="menu">
+// =====================================================
+// SUPABASE
+// =====================================================
 
-            <a href="#inicio">
-                INICIO
-            </a>
+const supabase =
+    createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_KEY
+    );
 
-            <a href="#autos">
-                AUTOS
-            </a>
+// =====================================================
+// MERCADO PAGO
+// =====================================================
 
-            <a href="#eventos">
-                EVENTOS
-            </a>
+const mpClient =
+    new MercadoPagoConfig({
+        accessToken:
+            process.env.MP_ACCESS_TOKEN
+    });
 
-            <a href="#galeria">
-                GALERÍA
-            </a>
+const preferenceClient =
+    new Preference(mpClient);
 
-            <a href="#contacto">
-                CONTACTO
-            </a>
+// =====================================================
+// PRECIOS
+// =====================================================
 
-        </nav>
+const PRECIO_AUTO = 12000;
 
-    </header>
+const PRECIO_ACOMPANANTE = 3000;
 
-
-
-    <!-- =====================================================
-         CONTENIDO PRINCIPAL
-    ====================================================== -->
-
-    <main>
-
-
-        <!-- =================================================
-             PORTADA
-        ================================================== -->
-
-        <section
-            id="inicio"
-            class="hero"
-        >
-
-            <div class="hero-contenido">
-
-                <p class="subtitulo">
-                    AUTOMOTIVE EXPERIENCE
-                </p>
-
-
-                <h1>
-                    WOLF
-                    <span>
-                        SHOW CARS
-                    </span>
-                </h1>
-
-
-                <p class="evento-portada">
-                    WOLF SHOWCARS 2027
-                </p>
-
-
-                <h2 class="fecha-portada">
-                    27 &amp; 28 DE FEBRERO
-                </h2>
-
-
-                <p class="lugar-portada">
-                    PREDIO SOCIEDAD RURAL DE ROQUE PÉREZ
-                </p>
-
-
-                <p class="estado-portada">
-                    INSCRIPCIONES ABIERTAS
-                </p>
-
-
-                <div class="botones portada-botones">
-
-                    <a
-                        href="#eventos"
-                        class="boton boton-principal"
-                    >
-                        🚗 ACREDITAR MI AUTO
-                    </a>
-
-
-                    <a
-                        href="#stands"
-                        class="boton boton-secundario"
-                    >
-                        🏢 POSTULAR MI STAND
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             AUTOS
-        ================================================== -->
-
-        <section
-            id="autos"
-            class="seccion"
-        >
-
-            <div class="titulo-seccion">
-
-                <p>
-                    WOLF GARAGE
-                </p>
-
-                <h2>
-                    NUESTROS AUTOS
-                </h2>
-
-                <span></span>
-
-            </div>
-
-
-            <div class="autos-contenedor">
-
-
-                <article class="auto">
-
-                    <div class="auto-imagen">
-
-                        <div class="sin-imagen">
-                            PRÓXIMAMENTE
-                        </div>
-
-                    </div>
-
-
-                    <div class="auto-info">
-
-                        <h3>
-                            WOLF #01
-                        </h3>
-
-                        <p>
-                            Vehículo destacado
-                        </p>
-
-                    </div>
-
-                </article>
-
-
-
-                <article class="auto">
-
-                    <div class="auto-imagen">
-
-                        <div class="sin-imagen">
-                            PRÓXIMAMENTE
-                        </div>
-
-                    </div>
-
-
-                    <div class="auto-info">
-
-                        <h3>
-                            WOLF #02
-                        </h3>
-
-                        <p>
-                            Vehículo destacado
-                        </p>
-
-                    </div>
-
-                </article>
-
-
-
-                <article class="auto">
-
-                    <div class="auto-imagen">
-
-                        <div class="sin-imagen">
-                            PRÓXIMAMENTE
-                        </div>
-
-                    </div>
-
-
-                    <div class="auto-info">
-
-                        <h3>
-                            WOLF #03
-                        </h3>
-
-                        <p>
-                            Vehículo destacado
-                        </p>
-
-                    </div>
-
-                </article>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             EVENTO
-        ================================================== -->
-
-        <section
-            id="eventos"
-            class="seccion seccion-oscura"
-        >
-
-            <div class="titulo-seccion">
-
-                <p>
-                    WOLF EVENTS
-                </p>
-
-                <h2>
-                    WOLF SHOWCARS 2027
-                </h2>
-
-                <span></span>
-
-            </div>
-
-
-
-            <div class="evento-card">
-
-                <div class="evento-contenido">
-
-
-                    <!-- ENCABEZADO -->
-
-                    <div class="evento-encabezado">
-
-                        <p class="evento-etiqueta">
-                            INSCRIPCIONES ABIERTAS
-                        </p>
-
-
-                        <h3>
-                            27 &amp; 28 DE FEBRERO
-                        </h3>
-
-                    </div>
-
-
-
-                    <!-- DATOS DEL EVENTO -->
-
-                    <div class="evento-datos">
-
-
-                        <div class="evento-dato">
-
-                            <span>
-                                FECHA
-                            </span>
-
-                            <strong>
-                                27 Y 28 DE FEBRERO DE 2027
-                            </strong>
-
-                        </div>
-
-
-                        <div class="evento-dato">
-
-                            <span>
-                                LUGAR
-                            </span>
-
-                            <strong>
-                                PREDIO SOCIEDAD RURAL DE ROQUE PÉREZ
-                            </strong>
-
-                        </div>
-
-
-                        <div class="evento-dato">
-
-                            <span>
-                                DIRECCIÓN
-                            </span>
-
-                            <strong>
-                                ACCESO PEDRO GUTIERREZ · ROQUE PÉREZ
-                            </strong>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- ACREDITACIÓN -->
-
-                    <div class="acreditacion-bloque">
-
-                        <div class="bloque-titulo">
-
-                            <p>
-                                ACREDITACIÓN DE VEHÍCULOS
-                            </p>
-
-                            <h4>
-                                AUTO + 1 ACOMPAÑANTE
-                            </h4>
-
-                        </div>
-
-
-                        <div class="precio-principal">
-
-                            <strong>
-                                $12.000
-                            </strong>
-
-                            <span>
-                                Incluye 1 acompañante
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACOMPAÑANTES -->
-
-                    <div class="acompanantes-bloque">
-
-                        <div class="bloque-titulo">
-
-                            <p>
-                                ACOMPAÑANTES EXTRAS
-                            </p>
-
-                            <h4>
-                                ¿VIENEN MÁS PERSONAS?
-                            </h4>
-
-                        </div>
-
-
-                        <p class="acompanantes-descripcion">
-
-                            Podés agregar acompañantes adicionales.
-                            No es necesario cargar sus datos personales.
-
-                        </p>
-
-
-                        <div class="contador-acompanantes">
-
-                            <button
-                                type="button"
-                                class="contador-boton"
-                                id="btnRestarAcompanante"
-                                aria-label="Restar acompañante"
-                            >
-                                −
-                            </button>
-
-
-                            <span
-                                id="cantidadAcompanantes"
-                                class="contador-cantidad"
-                            >
-                                0
-                            </span>
-
-
-                            <button
-                                type="button"
-                                class="contador-boton"
-                                id="btnSumarAcompanante"
-                                aria-label="Agregar acompañante"
-                            >
-                                +
-                            </button>
-
-                        </div>
-
-
-                        <p class="precio-acompanante">
-                            $3.000 por acompañante adicional
-                        </p>
-
-                    </div>
-
-
-
-                    <!-- TOTAL -->
-
-                    <div class="evento-total">
-
-                        <span>
-                            TOTAL DE LA ACREDITACIÓN
-                        </span>
-
-                        <strong id="totalAcreditacion">
-                            $12.000
-                        </strong>
-
-                    </div>
-
-
-
-                    <!-- BOTÓN FORMULARIO -->
-
-                    <div class="botones evento-botones">
-
-                        <button
-                            type="button"
-                            id="btnMostrarFormulario"
-                            class="boton boton-principal"
-                        >
-                            🚗 CARGAR DATOS DEL AUTO
-                        </button>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         FORMULARIO
-                    ================================================== -->
-
-                    <div
-                        id="formularioAcreditacion"
-                        class="formulario-acreditacion"
-                    >
-
-                        <div class="formulario-titulo">
-
-                            <p>
-                                WOLF SHOWCARS 2027
-                            </p>
-
-                            <h3>
-                                DATOS DE ACREDITACIÓN
-                            </h3>
-
-                            <span></span>
-
-                        </div>
-
-
-
-                        <!-- EXPOSITOR -->
-
-                        <div class="formulario-grupo">
-
-                            <h4>
-                                DATOS DEL EXPOSITOR
-                            </h4>
-
-                            <p class="formulario-ayuda">
-                                Completá tus datos para poder contactarte
-                                con la organización.
-                            </p>
-
-
-                            <div class="formulario-grid">
-
-
-                                <div class="campo">
-
-                                    <label for="nombre">
-                                        NOMBRE Y APELLIDO
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="nombre"
-                                        name="nombre"
-                                        placeholder="Ingresá tu nombre y apellido"
-                                        autocomplete="name"
-                                    >
-
-                                </div>
-
-
-
-                                <div class="campo">
-
-                                    <label for="dni">
-                                        DNI
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="dni"
-                                        name="dni"
-                                        placeholder="Ingresá tu DNI"
-                                        inputmode="numeric"
-                                        autocomplete="off"
-                                    >
-
-                                </div>
-
-
-
-                                <div class="campo">
-
-                                    <label for="telefono">
-                                        TELÉFONO / WHATSAPP
-                                    </label>
-
-                                    <input
-                                        type="tel"
-                                        id="telefono"
-                                        name="telefono"
-                                        placeholder="Ingresá tu teléfono"
-                                        autocomplete="tel"
-                                    >
-
-                                </div>
-
-
-
-                                <div class="campo">
-
-                                    <label for="instagram">
-                                        INSTAGRAM
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="instagram"
-                                        name="instagram"
-                                        placeholder="@usuario"
-                                        autocomplete="off"
-                                    >
-
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- VEHÍCULO -->
-
-                        <div class="formulario-grupo">
-
-                            <h4>
-                                DATOS DEL VEHÍCULO
-                            </h4>
-
-                            <p class="formulario-ayuda">
-                                Estos datos serán utilizados para identificar
-                                y acreditar el vehículo en el evento.
-                            </p>
-
-
-                            <div class="formulario-grid">
-
-
-                                <div class="campo">
-
-                                    <label for="marca">
-                                        MARCA
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="marca"
-                                        name="marca"
-                                        placeholder="Ej: Volkswagen"
-                                    >
-
-                                </div>
-
-
-
-                                <div class="campo">
-
-                                    <label for="modelo">
-                                        MODELO
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="modelo"
-                                        name="modelo"
-                                        placeholder="Ej: Golf GTI"
-                                    >
-
-                                </div>
-
-
-
-                                <div class="campo">
-
-                                    <label for="anio">
-                                        AÑO
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="anio"
-                                        name="anio"
-                                        placeholder="Ej: 2020"
-                                        inputmode="numeric"
-                                    >
-
-                                </div>
-
-
-
-                                <div class="campo">
-
-                                    <label for="patente">
-                                        PATENTE
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        id="patente"
-                                        name="patente"
-                                        placeholder="Ej: AB123CD"
-                                        autocomplete="off"
-                                    >
-
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- RESUMEN -->
-
-                        <div class="formulario-resumen">
-
-
-                            <div class="resumen-linea">
-
-                                <span>
-                                    AUTO + 1 ACOMPAÑANTE
-                                </span>
-
-                                <strong>
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-
-                            <div class="resumen-linea">
-
-                                <span>
-                                    ACOMPAÑANTES ADICIONALES
-                                </span>
-
-                                <strong id="resumenAcompanantes">
-                                    0 × $3.000
-                                </strong>
-
-                            </div>
-
-
-                            <div class="resumen-total">
-
-                                <span>
-                                    TOTAL A PAGAR
-                                </span>
-
-                                <strong id="resumenTotal">
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <button
-                            type="button"
-                            id="btnContinuarAcreditacion"
-                            class="boton boton-principal boton-formulario"
-                        >
-                            CONTINUAR CON LA ACREDITACIÓN
-                        </button>
-
-
-                        <div
-                            id="mensajeErrorFormulario"
-                            class="mensaje-error-formulario"
-                            role="alert"
-                            aria-live="polite"
-                        ></div>
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         RESUMEN FINAL
-                    ================================================== -->
-
-                    <div
-                        id="resumenFinalAcreditacion"
-                        class="resumen-final-acreditacion"
-                    >
-
-
-                        <div class="formulario-titulo">
-
-                            <p>
-                                WOLF SHOWCARS 2027
-                            </p>
-
-                            <h3>
-                                RESUMEN DE TU ACREDITACIÓN
-                            </h3>
-
-                            <span></span>
-
-                        </div>
-
-
-
-                        <div class="resumen-final-mensaje">
-
-                            <strong>
-                                ¡Datos cargados correctamente!
-                            </strong>
-
-                            <p>
-                                Revisá la información de tu acreditación
-                                antes de continuar.
-                            </p>
-
-                        </div>
-
-
-
-                        <div class="resumen-final-bloque">
-
-                            <h4>
-                                DATOS DEL EXPOSITOR
-                            </h4>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    NOMBRE Y APELLIDO
-                                </span>
-
-                                <strong id="finalNombre"></strong>
-
-                            </div>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    DNI
-                                </span>
-
-                                <strong id="finalDni"></strong>
-
-                            </div>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    TELÉFONO / WHATSAPP
-                                </span>
-
-                                <strong id="finalTelefono"></strong>
-
-                            </div>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    INSTAGRAM
-                                </span>
-
-                                <strong id="finalInstagram"></strong>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="resumen-final-bloque">
-
-                            <h4>
-                                DATOS DEL VEHÍCULO
-                            </h4>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    MARCA
-                                </span>
-
-                                <strong id="finalMarca"></strong>
-
-                            </div>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    MODELO
-                                </span>
-
-                                <strong id="finalModelo"></strong>
-
-                            </div>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    AÑO
-                                </span>
-
-                                <strong id="finalAnio"></strong>
-
-                            </div>
-
-
-                            <div class="resumen-final-dato">
-
-                                <span>
-                                    PATENTE
-                                </span>
-
-                                <strong id="finalPatente"></strong>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="resumen-final-pago">
-
-
-                            <div>
-
-                                <span>
-                                    AUTO + 1 ACOMPAÑANTE
-                                </span>
-
-                                <strong>
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    ACOMPAÑANTES ADICIONALES
-                                </span>
-
-                                <strong id="finalAcompanantes">
-                                    0 × $3.000
-                                </strong>
-
-                            </div>
-
-
-                            <div class="resumen-final-total">
-
-                                <span>
-                                    TOTAL A PAGAR
-                                </span>
-
-                                <strong id="finalTotal">
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <div class="resumen-final-acciones">
-
-
-                            <button
-                                type="button"
-                                id="btnVolverFormulario"
-                                class="boton boton-secundario"
-                            >
-                                ← MODIFICAR DATOS
-                            </button>
-
-
-                            <button
-                                type="button"
-                                id="btnContinuarPago"
-                                class="boton boton-principal"
-                            >
-                                CONTINUAR AL PAGO →
-                            </button>
-
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         PANTALLA DE PAGO
-                    ================================================== -->
-
-                    <div
-                        id="pantallaPago"
-                        class="pantalla-pago"
-                    >
-
-
-                        <div class="formulario-titulo">
-
-                            <p>
-                                WOLF SHOWCARS 2027
-                            </p>
-
-                            <h3>
-                                FINALIZAR ACREDITACIÓN
-                            </h3>
-
-                            <span></span>
-
-                        </div>
-
-
-
-                        <div class="pago-cabecera">
-
-                            <div>
-
-                                <span>
-                                    TOTAL A PAGAR
-                                </span>
-
-                                <strong id="pagoTotal">
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="pago-seguridad">
-
-                            <span class="pago-icono">
-                                🔒
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    PAGO SEGURO
-                                </strong>
-
-                                <p>
-                                    Tu acreditación quedará confirmada
-                                    únicamente cuando el pago sea aprobado.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="metodos-pago">
-
-
-                            <div class="metodo-pago activo">
-
-                                <div class="metodo-icono">
-                                    💳
-                                </div>
-
-                                <div>
-
-                                    <strong>
-                                        Mercado Pago
-                                    </strong>
-
-                                    <span>
-                                        Tarjeta, dinero en cuenta y otros medios
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <div class="pago-resumen">
-
-                            <h4>
-                                RESUMEN DE COMPRA
-                            </h4>
-
-
-                            <div class="pago-linea">
-
-                                <span>
-                                    Vehículo + 1 acompañante
-                                </span>
-
-                                <strong>
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-
-                            <div class="pago-linea">
-
-                                <span>
-                                    Acompañantes adicionales
-                                </span>
-
-                                <strong id="pagoAcompanantes">
-                                    0 × $3.000
-                                </strong>
-
-                            </div>
-
-
-                            <div class="pago-linea pago-total">
-
-                                <span>
-                                    TOTAL
-                                </span>
-
-                                <strong id="pagoTotalResumen">
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- BOTÓN REAL DE PAGO -->
-
-                        <button
-                            type="button"
-                            id="btnPagar"
-                            class="boton boton-principal boton-pagar"
-                        >
-                            💳 IR A MERCADO PAGO
-                        </button>
-
-
-
-                        <!-- BOTÓN DE PRUEBA -->
-
-                        <button
-                            type="button"
-                            id="btnSimularPago"
-                            class="boton boton-prueba"
-                        >
-                            🧪 SIMULAR PAGO APROBADO
-                        </button>
-
-
-                        <p class="pago-nota">
-
-                            La simulación se encuentra habilitada únicamente
-                            para realizar pruebas del sistema.
-
-                        </p>
-
-
-
-                        <button
-                            type="button"
-                            id="btnVolverResumen"
-                            class="boton boton-secundario"
-                        >
-                            ← VOLVER AL RESUMEN
-                        </button>
-
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         ACREDITACIÓN CONFIRMADA
-                    ================================================== -->
-
-                    <div
-                        id="acreditacionConfirmada"
-                        class="acreditacion-confirmada"
-                    >
-
-
-                        <div class="confirmacion-cabecera">
-
-                            <div class="confirmacion-check">
-                                ✓
-                            </div>
-
-
-                            <p>
-                                WOLF SHOWCARS 2027
-                            </p>
-
-
-                            <h3>
-                                ¡ACREDITACIÓN CONFIRMADA!
-                            </h3>
-
-
-                            <span>
-                                Tu pago fue registrado correctamente.
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="estado-pago-confirmado">
-
-                            <strong>
-                                ✓ PAGO CONFIRMADO
-                            </strong>
-
-                            <span>
-                                Presentá este QR al ingresar al evento.
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="numero-acreditacion">
-
-                            <span>
-                                NÚMERO DE ACREDITACIÓN
-                            </span>
-
-                            <strong id="numeroAcreditacion">
-                                WSC27-000001
-                            </strong>
-
-                        </div>
-
-
-
-                        <div class="qr-contenedor">
-
-                            <div
-                                id="codigoQR"
-                                class="codigo-qr"
-                            ></div>
-
-                            <p>
-                                ESCANEÁ ESTE CÓDIGO EN EL INGRESO
-                            </p>
-
-                        </div>
-
-
-
-                        <div class="acreditacion-datos">
-
-
-                            <div class="acreditacion-datos-grupo">
-
-                                <h4>
-                                    EXPOSITOR
-                                </h4>
-
-
-                                <div class="acreditacion-dato">
-
-                                    <span>
-                                        NOMBRE
-                                    </span>
-
-                                    <strong id="confirmadoNombre"></strong>
-
-                                </div>
-
-
-                                <div class="acreditacion-dato">
-
-                                    <span>
-                                        DNI
-                                    </span>
-
-                                    <strong id="confirmadoDni"></strong>
-
-                                </div>
-
-
-                                <div class="acreditacion-dato">
-
-                                    <span>
-                                        TELÉFONO
-                                    </span>
-
-                                    <strong id="confirmadoTelefono"></strong>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <div class="acreditacion-datos-grupo">
-
-                                <h4>
-                                    VEHÍCULO
-                                </h4>
-
-
-                                <div class="acreditacion-dato">
-
-                                    <span>
-                                        MARCA
-                                    </span>
-
-                                    <strong id="confirmadoMarca"></strong>
-
-                                </div>
-
-
-                                <div class="acreditacion-dato">
-
-                                    <span>
-                                        MODELO
-                                    </span>
-
-                                    <strong id="confirmadoModelo"></strong>
-
-                                </div>
-
-
-                                <div class="acreditacion-dato">
-
-                                    <span>
-                                        AÑO
-                                    </span>
-
-                                    <strong id="confirmadoAnio"></strong>
-
-                                </div>
-
-
-                                <div class="acreditacion-dato">
-
-                                    <span>
-                                        PATENTE
-                                    </span>
-
-                                    <strong id="confirmadoPatente"></strong>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="acreditacion-economica">
-
-
-                            <div>
-
-                                <span>
-                                    AUTO + 1 ACOMPAÑANTE
-                                </span>
-
-                                <strong>
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    ACOMPAÑANTES EXTRAS
-                                </span>
-
-                                <strong id="confirmadoAcompanantes">
-                                    0
-                                </strong>
-
-                            </div>
-
-
-                            <div class="acreditacion-total">
-
-                                <span>
-                                    TOTAL PAGADO
-                                </span>
-
-                                <strong id="confirmadoTotal">
-                                    $12.000
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="informacion-ingreso">
-
-                            <h4>
-                                IMPORTANTE PARA EL INGRESO
-                            </h4>
-
-                            <p>
-                                Guardá esta acreditación y presentá el
-                                código QR en el acceso al evento.
-                            </p>
-
-                            <p>
-                                La pulsera de acceso será entregada
-                                personalmente al momento de ingresar
-                                al predio.
-                            </p>
-
-                        </div>
-
-
-
-                        <div class="acreditacion-acciones">
-
-
-                            <button
-                                type="button"
-                                id="btnImprimirAcreditacion"
-                                class="boton boton-principal"
-                            >
-                                🖨️ IMPRIMIR / GUARDAR PDF
-                            </button>
-
-
-                            <button
-                                type="button"
-                                id="btnVolverInicio"
-                                class="boton boton-secundario"
-                            >
-                                VOLVER AL INICIO
-                            </button>
-
-
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             STANDS
-        ================================================== -->
-
-        <section
-            id="stands"
-            class="seccion seccion-stands"
-        >
-
-            <div class="titulo-seccion">
-
-                <p>
-                    WOLF BUSINESS
-                </p>
-
-                <h2>
-                    STANDS Y EXPOSITORES
-                </h2>
-
-                <span></span>
-
-            </div>
-
-
-
-            <div class="stand-card">
-
-                <div class="stand-contenido">
-
-                    <p class="stand-etiqueta">
-                        POSTULACIONES ABIERTAS
-                    </p>
-
-
-                    <h3>
-                        ¿QUERÉS SER PARTE DE WOLF?
-                    </h3>
-
-
-                    <p class="stand-descripcion">
-
-                        Buscamos marcas, empresas,
-                        emprendimientos y propuestas
-                        relacionadas con el mundo motor
-                        que quieran formar parte de
-                        WOLF SHOWCARS 2027.
-
-                    </p>
-
-
-                    <div class="botones stand-botones">
-
-                        <a
-                            href="#contacto"
-                            class="boton boton-principal"
-                        >
-                            🏢 POSTULAR MI STAND
-                        </a>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             GALERÍA
-        ================================================== -->
-
-        <section
-            id="galeria"
-            class="seccion"
-        >
-
-            <div class="titulo-seccion">
-
-                <p>
-                    WOLF MOMENTS
-                </p>
-
-                <h2>
-                    GALERÍA
-                </h2>
-
-                <span></span>
-
-            </div>
-
-
-            <div class="galeria">
-
-                <div>
-                    WOLF
-                </div>
-
-                <div>
-                    WOLF
-                </div>
-
-                <div>
-                    WOLF
-                </div>
-
-                <div>
-                    WOLF
-                </div>
-
-                <div>
-                    WOLF
-                </div>
-
-                <div>
-                    WOLF
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             CONTACTO
-        ================================================== -->
-
-        <section
-            id="contacto"
-            class="seccion seccion-contacto"
-        >
-
-            <div class="titulo-seccion">
-
-                <p>
-                    GET IN TOUCH
-                </p>
-
-                <h2>
-                    CONTACTO
-                </h2>
-
-                <span></span>
-
-            </div>
-
-
-            <p class="contacto-texto">
-                ¿Querés formar parte de Wolf Show Cars?
-            </p>
-
-
-            <a
-                href="#"
-                class="boton boton-principal"
-            >
-                CONTACTANOS
-            </a>
-
-
-        </section>
-
-
-    </main>
-
-
-
-    <!-- =====================================================
-         PIE
-    ====================================================== -->
-
-    <footer>
-
-        <div class="logo-footer">
-
-            WOLF
-
-            <span>
-                SHOW CARS
-            </span>
-
-        </div>
-
-
-        <p>
-            © 2026 Wolf Show Cars.
-            Todos los derechos reservados.
-        </p>
-
-    </footer>
-
-
-
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
-
-    <script>
-
-    /* =====================================================
-       CONFIGURACIÓN
-    ===================================================== */
-
-    const URL_API =
-        "https://squeezing-bogus-playback.ngrok-free.dev";
-
-
-    /* =====================================================
-       PRECIOS
-    ===================================================== */
-
-    const precioAuto = 12000;
-
-    const precioAcompanante = 3000;
-
-    let cantidadAcompanantes = 0;
-
-    let numeroAcreditacionActual = "";
-
-    let codigoSeguridadActual = "";
-
-
-
-    /* =====================================================
-       ELEMENTOS
-    ===================================================== */
-
-    const btnSumar =
-        document.getElementById(
-            "btnSumarAcompanante"
+const MAX_ACOMPANANTES = 50;
+
+// =====================================================
+// EXPRESS
+// =====================================================
+
+app.use(
+    express.json({
+        limit: "100kb"
+    })
+);
+
+// =====================================================
+// CORS
+// =====================================================
+
+app.use(
+    function (req, res, next) {
+
+        const origenPermitido =
+            process.env.ALLOWED_ORIGIN || "*";
+
+        res.header(
+            "Access-Control-Allow-Origin",
+            origenPermitido
         );
 
-    const btnRestar =
-        document.getElementById(
-            "btnRestarAcompanante"
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Origin, X-Requested-With, Content-Type, Accept"
         );
 
-    const cantidad =
-        document.getElementById(
-            "cantidadAcompanantes"
+        res.header(
+            "Access-Control-Allow-Methods",
+            "GET, POST, OPTIONS"
         );
 
-    const total =
-        document.getElementById(
-            "totalAcreditacion"
+        if (
+            req.method === "OPTIONS"
+        ) {
+
+            return res.sendStatus(204);
+        }
+
+        next();
+    }
+);
+
+// =====================================================
+// LOG DE PETICIONES
+// =====================================================
+
+app.use(
+    function (req, res, next) {
+
+        console.log(
+            "REQUEST:",
+            req.method,
+            req.originalUrl,
+            "Origin:",
+            req.headers.origin || "-"
         );
 
-    const resumenAcompanantes =
-        document.getElementById(
-            "resumenAcompanantes"
-        );
+        next();
+    }
+);
 
-    const resumenTotal =
-        document.getElementById(
-            "resumenTotal"
-        );
+// =====================================================
+// FUNCIONES AUXILIARES
+// =====================================================
 
+function texto(valor) {
 
+    return String(
+        valor ?? ""
+    ).trim();
+}
 
-    /* =====================================================
-       FORMULARIO
-    ===================================================== */
+// -----------------------------------------------------
 
-    const formulario =
-        document.getElementById(
-            "formularioAcreditacion"
-        );
+function normalizarInstagram(valor) {
 
-    const btnMostrarFormulario =
-        document.getElementById(
-            "btnMostrarFormulario"
-        );
+    let instagram =
+        texto(valor);
 
-    const btnContinuarAcreditacion =
-        document.getElementById(
-            "btnContinuarAcreditacion"
-        );
+    if (
+        instagram === ""
+    ) {
 
-    const mensajeErrorFormulario =
-        document.getElementById(
-            "mensajeErrorFormulario"
-        );
-
-
-
-    /* =====================================================
-       RESUMEN FINAL
-    ===================================================== */
-
-    const resumenFinal =
-        document.getElementById(
-            "resumenFinalAcreditacion"
-        );
-
-    const btnVolverFormulario =
-        document.getElementById(
-            "btnVolverFormulario"
-        );
-
-    const btnContinuarPago =
-        document.getElementById(
-            "btnContinuarPago"
-        );
-
-
-
-    /* =====================================================
-       PAGO
-    ===================================================== */
-
-    const pantallaPago =
-        document.getElementById(
-            "pantallaPago"
-        );
-
-    const btnPagar =
-        document.getElementById(
-            "btnPagar"
-        );
-
-    const btnSimularPago =
-        document.getElementById(
-            "btnSimularPago"
-        );
-
-    const btnVolverResumen =
-        document.getElementById(
-            "btnVolverResumen"
-        );
-
-
-
-    /* =====================================================
-       ACREDITACIÓN CONFIRMADA
-    ===================================================== */
-
-    const acreditacionConfirmada =
-        document.getElementById(
-            "acreditacionConfirmada"
-        );
-
-    const btnImprimirAcreditacion =
-        document.getElementById(
-            "btnImprimirAcreditacion"
-        );
-
-    const btnVolverInicio =
-        document.getElementById(
-            "btnVolverInicio"
-        );
-
-
-
-    /* =====================================================
-       FORMATEAR DINERO
-    ===================================================== */
-
-    function formatoDinero(valor) {
-
-        return (
-            "$" +
-            Number(valor).toLocaleString("es-AR")
-        );
-
+        return "";
     }
 
-
-
-    /* =====================================================
-       OBTENER TOTAL
-    ===================================================== */
-
-    function obtenerTotal() {
-
-        return (
-            precioAuto +
-            (
-                cantidadAcompanantes *
-                precioAcompanante
-            )
+    instagram =
+        instagram.replace(
+            /^@+/,
+            ""
         );
 
+    return "@" + instagram;
+}
+
+// -----------------------------------------------------
+
+function normalizarPatente(valor) {
+
+    return texto(valor)
+        .replace(
+            /[\s-]/g,
+            ""
+        )
+        .toUpperCase();
+}
+
+// -----------------------------------------------------
+
+function validarDNI(dni) {
+
+    return /^\d{7,8}$/.test(
+        dni
+    );
+}
+
+// -----------------------------------------------------
+
+function validarAnio(anio) {
+
+    if (
+        !/^\d{4}$/.test(anio)
+    ) {
+
+        return false;
     }
 
+    const numero =
+        Number(anio);
 
-
-    /* =====================================================
-       ACTUALIZAR TOTAL
-    ===================================================== */
-
-    function actualizarTotal() {
-
-        const totalCalculado =
-            obtenerTotal();
-
-
-        cantidad.textContent =
-            cantidadAcompanantes;
-
-
-        total.textContent =
-            formatoDinero(
-                totalCalculado
-            );
-
-
-        resumenAcompanantes.textContent =
-            cantidadAcompanantes +
-            " × " +
-            formatoDinero(
-                precioAcompanante
-            );
-
-
-        resumenTotal.textContent =
-            formatoDinero(
-                totalCalculado
-            );
-
-    }
-
-
-
-    /* =====================================================
-       SUMAR ACOMPAÑANTE
-    ===================================================== */
-
-    btnSumar.addEventListener(
-        "click",
-        function () {
-
-            cantidadAcompanantes++;
-
-            actualizarTotal();
-
-        }
+    return (
+        numero >= 1900 &&
+        numero <= 2027
     );
+}
 
+// -----------------------------------------------------
 
+function validarPatente(patente) {
 
-    /* =====================================================
-       RESTAR ACOMPAÑANTE
-    ===================================================== */
-
-    btnRestar.addEventListener(
-        "click",
-        function () {
-
-            if (
-                cantidadAcompanantes <= 0
-            ) {
-
-                return;
-
-            }
-
-
-            cantidadAcompanantes--;
-
-            actualizarTotal();
-
-        }
+    return /^[A-Z0-9]{5,8}$/.test(
+        patente
     );
+}
 
+// =====================================================
+// GENERAR NÚMERO DE ACREDITACIÓN
+// =====================================================
 
+function generarNumeroAcreditacion() {
 
-    /* =====================================================
-       MOSTRAR FORMULARIO
-    ===================================================== */
-
-    btnMostrarFormulario.addEventListener(
-        "click",
-        function () {
-
-            const visible =
-                formulario.classList.toggle(
-                    "formulario-visible"
-                );
-
-
-            if (visible) {
-
-                formulario.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-
-            }
-
-        }
-    );
-
-
-
-    /* =====================================================
-       LIMPIAR ERRORES
-    ===================================================== */
-
-    function limpiarErrores() {
-
-        const campos =
-            formulario.querySelectorAll(
-                "input"
-            );
-
-
-        campos.forEach(
-            function (campo) {
-
-                campo.classList.remove(
-                    "campo-error"
-                );
-
-            }
+    const numero =
+        crypto.randomInt(
+            100000,
+            1000000
         );
 
+    return (
+        "WSC27-" +
+        numero
+    );
+}
 
-        mensajeErrorFormulario.textContent =
-            "";
+// =====================================================
+// GENERAR CÓDIGO DE SEGURIDAD
+// =====================================================
 
-        mensajeErrorFormulario.style.display =
-            "none";
+function generarCodigoSeguridad() {
 
+    const caracteres =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let codigo = "";
+
+    for (
+        let i = 0;
+        i < 10;
+        i++
+    ) {
+
+        const posicion =
+            crypto.randomInt(
+                0,
+                caracteres.length
+            );
+
+        codigo +=
+            caracteres.charAt(
+                posicion
+            );
     }
 
+    return codigo;
+}
 
+// =====================================================
+// GENERAR ACREDITACIÓN ÚNICA
+// =====================================================
 
-    /* =====================================================
-       VALIDAR FORMULARIO
-    ===================================================== */
+async function obtenerNumeroDisponible() {
 
-    function validarFormulario() {
+    for (
+        let intento = 0;
+        intento < 10;
+        intento++
+    ) {
 
-        limpiarErrores();
+        const numero =
+            generarNumeroAcreditacion();
 
+        const {
+            data,
+            error
+        } =
+            await supabase
+                .from("acreditaciones")
+                .select("id")
+                .eq(
+                    "numero_acreditacion",
+                    numero
+                )
+                .maybeSingle();
 
-        const camposObligatorios = [
+        if (error) {
 
-            document.getElementById(
-                "nombre"
-            ),
+            console.error(
+                "ERROR COMPROBANDO NÚMERO:",
+                error
+            );
 
-            document.getElementById(
-                "dni"
-            ),
+            throw error;
+        }
 
-            document.getElementById(
-                "telefono"
-            ),
+        if (!data) {
 
-            document.getElementById(
-                "instagram"
-            ),
+            return numero;
+        }
+    }
 
-            document.getElementById(
-                "marca"
-            ),
+    throw new Error(
+        "No se pudo generar un número de acreditación disponible."
+    );
+}
 
-            document.getElementById(
-                "modelo"
-            ),
+// =====================================================
+// VALIDAR FIRMA WEBHOOK MERCADO PAGO
+// =====================================================
 
-            document.getElementById(
-                "anio"
-            ),
+function validarFirmaWebhookMercadoPago(
+    req,
+    dataId
+) {
 
-            document.getElementById(
-                "patente"
-            )
+    const secret =
+        process.env.MP_WEBHOOK_SECRET;
 
-        ];
+    if (
+        !secret
+    ) {
 
+        throw new Error(
+            "MP_WEBHOOK_SECRET no está configurado."
+        );
+    }
 
-        let formularioCorrecto =
-            true;
-
-
-        camposObligatorios.forEach(
-            function (campo) {
-
-                if (
-                    campo.value.trim() === ""
-                ) {
-
-                    campo.classList.add(
-                        "campo-error"
-                    );
-
-                    formularioCorrecto =
-                        false;
-
-                }
-
-            }
+    const xSignature =
+        texto(
+            req.headers["x-signature"]
         );
 
-
-        if (!formularioCorrecto) {
-
-            mensajeErrorFormulario.textContent =
-                "Por favor, completá todos los campos antes de continuar.";
-
-            mensajeErrorFormulario.style.display =
-                "block";
-
-
-            const primerError =
-                formulario.querySelector(
-                    ".campo-error"
-                );
-
-
-            if (primerError) {
-
-                primerError.focus();
-
-            }
-
-
-            return false;
-
-        }
-
-
-        return true;
-
-    }
-
-
-
-    /* =====================================================
-       CARGAR RESUMEN FINAL
-    ===================================================== */
-
-    function cargarResumenFinal() {
-
-        document.getElementById(
-            "finalNombre"
-        ).textContent =
-            document.getElementById(
-                "nombre"
-            ).value.trim();
-
-
-        document.getElementById(
-            "finalDni"
-        ).textContent =
-            document.getElementById(
-                "dni"
-            ).value.trim();
-
-
-        document.getElementById(
-            "finalTelefono"
-        ).textContent =
-            document.getElementById(
-                "telefono"
-            ).value.trim();
-
-
-        document.getElementById(
-            "finalInstagram"
-        ).textContent =
-            document.getElementById(
-                "instagram"
-            ).value.trim();
-
-
-        document.getElementById(
-            "finalMarca"
-        ).textContent =
-            document.getElementById(
-                "marca"
-            ).value.trim();
-
-
-        document.getElementById(
-            "finalModelo"
-        ).textContent =
-            document.getElementById(
-                "modelo"
-            ).value.trim();
-
-
-        document.getElementById(
-            "finalAnio"
-        ).textContent =
-            document.getElementById(
-                "anio"
-            ).value.trim();
-
-
-        document.getElementById(
-            "finalPatente"
-        ).textContent =
-            document.getElementById(
-                "patente"
-            )
-            .value
-            .trim()
-            .toUpperCase();
-
-
-        document.getElementById(
-            "finalAcompanantes"
-        ).textContent =
-            cantidadAcompanantes +
-            " × " +
-            formatoDinero(
-                precioAcompanante
-            );
-
-
-        document.getElementById(
-            "finalTotal"
-        ).textContent =
-            formatoDinero(
-                obtenerTotal()
-            );
-
-    }
-
-
-
-    /* =====================================================
-       CONTINUAR CON ACREDITACIÓN
-    ===================================================== */
-
-    btnContinuarAcreditacion.addEventListener(
-        "click",
-        function () {
-
-            if (
-                !validarFormulario()
-            ) {
-
-                return;
-
-            }
-
-
-            cargarResumenFinal();
-
-
-            formulario.style.display =
-                "none";
-
-
-            resumenFinal.classList.add(
-                "resumen-final-visible"
-            );
-
-
-            resumenFinal.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-    );
-
-
-
-    /* =====================================================
-       VOLVER AL FORMULARIO
-    ===================================================== */
-
-    btnVolverFormulario.addEventListener(
-        "click",
-        function () {
-
-            resumenFinal.classList.remove(
-                "resumen-final-visible"
-            );
-
-
-            resumenFinal.style.display =
-                "none";
-
-
-            formulario.style.display =
-                "";
-
-
-            formulario.classList.add(
-                "formulario-visible"
-            );
-
-
-            formulario.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-    );
-
-
-
-    /* =====================================================
-       CONTINUAR AL PAGO
-    ===================================================== */
-
-    btnContinuarPago.addEventListener(
-        "click",
-        function () {
-
-            const totalCalculado =
-                obtenerTotal();
-
-
-            document.getElementById(
-                "pagoTotal"
-            ).textContent =
-                formatoDinero(
-                    totalCalculado
-                );
-
-
-            document.getElementById(
-                "pagoTotalResumen"
-            ).textContent =
-                formatoDinero(
-                    totalCalculado
-                );
-
-
-            document.getElementById(
-                "pagoAcompanantes"
-            ).textContent =
-                cantidadAcompanantes +
-                " × " +
-                formatoDinero(
-                    precioAcompanante
-                );
-
-
-            resumenFinal.style.display =
-                "none";
-
-
-            pantallaPago.classList.add(
-                "pantalla-pago-visible"
-            );
-
-
-            pantallaPago.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-    );
-
-
-
-    /* =====================================================
-       VOLVER AL RESUMEN
-    ===================================================== */
-
-    btnVolverResumen.addEventListener(
-        "click",
-        function () {
-
-            pantallaPago.classList.remove(
-                "pantalla-pago-visible"
-            );
-
-
-            pantallaPago.style.display =
-                "";
-
-
-            resumenFinal.style.display =
-                "";
-
-
-            resumenFinal.classList.add(
-                "resumen-final-visible"
-            );
-
-
-            resumenFinal.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-    );
-
-
-
-    /* =====================================================
-       GUARDAR ACREDITACIÓN EN EL SERVIDOR
-    ===================================================== */
-
-    async function guardarAcreditacion() {
-
-        const datos = {
-
-            nombre:
-                document.getElementById(
-                    "nombre"
-                ).value.trim(),
-
-            dni:
-                document.getElementById(
-                    "dni"
-                ).value.trim(),
-
-            telefono:
-                document.getElementById(
-                    "telefono"
-                ).value.trim(),
-
-            instagram:
-                document.getElementById(
-                    "instagram"
-                ).value.trim(),
-
-            marca:
-                document.getElementById(
-                    "marca"
-                ).value.trim(),
-
-            modelo:
-                document.getElementById(
-                    "modelo"
-                ).value.trim(),
-
-            anio:
-                document.getElementById(
-                    "anio"
-                ).value.trim(),
-
-            patente:
-                document.getElementById(
-                    "patente"
-                ).value.trim().toUpperCase(),
-
-            acompanantes:
-                cantidadAcompanantes
-
+    const xRequestId =
+        texto(
+            req.headers["x-request-id"]
+        );
+
+    if (
+        !xSignature
+    ) {
+
+        return {
+            valida: false,
+            motivo:
+                "Falta el header x-signature."
         };
+    }
 
+    if (
+        !xRequestId
+    ) {
 
-        console.log(
-            "ENVIANDO ACREDITACIÓN AL SERVIDOR:"
+        return {
+            valida: false,
+            motivo:
+                "Falta el header x-request-id."
+        };
+    }
+
+    if (
+        !dataId
+    ) {
+
+        return {
+            valida: false,
+            motivo:
+                "Falta data.id."
+        };
+    }
+
+    // =================================================
+    // EXTRAER ts Y v1
+    // =================================================
+
+    const partes =
+        xSignature.split(",");
+
+    let timestamp = null;
+
+    const firmas = [];
+
+    for (
+        const parte
+        of partes
+    ) {
+
+        const indice =
+            parte.indexOf("=");
+
+        if (
+            indice === -1
+        ) {
+
+            continue;
+        }
+
+        const clave =
+            parte
+                .slice(0, indice)
+                .trim();
+
+        const valor =
+            parte
+                .slice(indice + 1)
+                .trim();
+
+        if (
+            clave === "ts"
+        ) {
+
+            timestamp =
+                valor;
+        }
+
+        if (
+            clave === "v1"
+        ) {
+
+            firmas.push(
+                valor
+            );
+        }
+    }
+
+    if (
+        !timestamp ||
+        firmas.length === 0
+    ) {
+
+        return {
+            valida: false,
+            motivo:
+                "La firma x-signature no contiene ts y v1 válidos."
+        };
+    }
+
+    // =================================================
+    // VALIDAR TIMESTAMP
+    // =================================================
+
+    const timestampNumero =
+        Number(timestamp);
+
+    if (
+        !Number.isSafeInteger(
+            timestampNumero
+        )
+    ) {
+
+        return {
+            valida: false,
+            motivo:
+                "Timestamp inválido."
+        };
+    }
+
+    // =================================================
+    // MANIFEST SEGÚN MERCADO PAGO
+    // =================================================
+
+    const manifest =
+        "id:" +
+        dataId +
+        ";request-id:" +
+        xRequestId +
+        ";ts:" +
+        timestamp +
+        ";";
+
+    // =================================================
+    // HMAC SHA-256
+    // =================================================
+
+    const firmaCalculada =
+        crypto
+            .createHmac(
+                "sha256",
+                secret
+            )
+            .update(
+                manifest
+            )
+            .digest("hex");
+
+    // =================================================
+    // COMPARAR FIRMAS DE FORMA SEGURA
+    // =================================================
+
+    const firmaCalculadaBuffer =
+        Buffer.from(
+            firmaCalculada,
+            "utf8"
         );
 
-        console.log(
-            datos
-        );
+    for (
+        const firmaRecibida
+        of firmas
+    ) {
 
-
-        const respuesta =
-            await fetch(
-                URL_API +
-                "/api/acreditaciones",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json",
-
-                        "Accept":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify(
-                            datos
-                        )
-
-                }
+        const firmaRecibidaBuffer =
+            Buffer.from(
+                firmaRecibida,
+                "utf8"
             );
 
+        if (
+            firmaRecibidaBuffer.length !==
+            firmaCalculadaBuffer.length
+        ) {
 
-        const texto =
-            await respuesta.text();
+            continue;
+        }
 
+        if (
+            crypto.timingSafeEqual(
+                firmaRecibidaBuffer,
+                firmaCalculadaBuffer
+            )
+        ) {
 
-        console.log(
-            "RESPUESTA API ACREDITACIONES:",
-            respuesta.status,
-            texto
-        );
+            return {
+                valida: true,
+                motivo:
+                    "Firma válida."
+            };
+        }
+    }
 
+    return {
+        valida: false,
+        motivo:
+            "La firma HMAC no coincide."
+    };
+}
 
-        let resultado;
+// =====================================================
+// API — CREAR ACREDITACIÓN
+// =====================================================
 
+app.post(
+    "/api/acreditaciones",
+    async function (req, res) {
 
         try {
 
-            resultado =
-                JSON.parse(
-                    texto
+            console.log(
+                "=========================================="
+            );
+
+            console.log(
+                "NUEVA ACREDITACIÓN"
+            );
+
+            const datos =
+                req.body || {};
+
+            const nombre =
+                texto(datos.nombre);
+
+            const dni =
+                texto(datos.dni)
+                    .replace(
+                        /\D/g,
+                        ""
+                    );
+
+            const telefono =
+                texto(datos.telefono);
+
+            const instagram =
+                normalizarInstagram(
+                    datos.instagram
                 );
+
+            const marca =
+                texto(datos.marca);
+
+            const modelo =
+                texto(datos.modelo);
+
+            const anio =
+                texto(datos.anio);
+
+            const patente =
+                normalizarPatente(
+                    datos.patente
+                );
+
+            const acompanantes =
+                Number(
+                    datos.acompanantes || 0
+                );
+
+            const campos =
+                {
+                    nombre,
+                    dni,
+                    telefono,
+                    instagram,
+                    marca,
+                    modelo,
+                    anio,
+                    patente
+                };
+
+            for (
+                const campo
+                of Object.keys(campos)
+            ) {
+
+                if (
+                    campos[campo] === ""
+                ) {
+
+                    return res
+                        .status(400)
+                        .json({
+
+                            ok: false,
+
+                            mensaje:
+                                "Falta completar el campo: " +
+                                campo
+
+                        });
+                }
+            }
+
+            if (
+                !validarDNI(dni)
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "El DNI debe contener entre 7 y 8 números."
+
+                    });
+            }
+
+            if (
+                !validarAnio(anio)
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "El año del vehículo no es válido."
+
+                    });
+            }
+
+            if (
+                !validarPatente(patente)
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "La patente no tiene un formato válido."
+
+                    });
+            }
+
+            if (
+                !Number.isInteger(
+                    acompanantes
+                ) ||
+                acompanantes < 0 ||
+                acompanantes > MAX_ACOMPANANTES
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "La cantidad de acompañantes no es válida."
+
+                    });
+            }
+
+            const total =
+                PRECIO_AUTO +
+                (
+                    acompanantes *
+                    PRECIO_ACOMPANANTE
+                );
+
+            const numeroAcreditacion =
+                await obtenerNumeroDisponible();
+
+            const codigoSeguridad =
+                generarCodigoSeguridad();
+
+            const {
+                data,
+                error
+            } =
+                await supabase
+                    .from("acreditaciones")
+                    .insert([
+                        {
+
+                            numero_acreditacion:
+                                numeroAcreditacion,
+
+                            codigo_seguridad:
+                                codigoSeguridad,
+
+                            nombre:
+                                nombre,
+
+                            dni:
+                                dni,
+
+                            telefono:
+                                telefono,
+
+                            instagram:
+                                instagram,
+
+                            marca:
+                                marca,
+
+                            modelo:
+                                modelo,
+
+                            anio:
+                                anio,
+
+                            patente:
+                                patente,
+
+                            acompanantes:
+                                acompanantes,
+
+                            precio_auto:
+                                PRECIO_AUTO,
+
+                            precio_acompanante:
+                                PRECIO_ACOMPANANTE,
+
+                            total:
+                                total,
+
+                            estado:
+                                "PENDIENTE_PAGO"
+
+                        }
+                    ])
+                    .select()
+                    .single();
+
+            if (error) {
+
+                console.error(
+                    "ERROR SUPABASE:",
+                    error
+                );
+
+                return res
+                    .status(500)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "No se pudo guardar la acreditación en la base de datos."
+
+                    });
+            }
+
+            const acreditacion = {
+
+                id:
+                    data.id,
+
+                numeroAcreditacion:
+                    numeroAcreditacion,
+
+                codigoSeguridad:
+                    codigoSeguridad,
+
+                datos: {
+
+                    nombre,
+                    dni,
+                    telefono,
+                    instagram,
+                    marca,
+                    modelo,
+                    anio,
+                    patente,
+                    acompanantes
+
+                },
+
+                precioAuto:
+                    PRECIO_AUTO,
+
+                precioAcompanante:
+                    PRECIO_ACOMPANANTE,
+
+                total,
+
+                estado:
+                    "PENDIENTE_PAGO"
+
+            };
+
+            console.log(
+                "ACREDITACIÓN CREADA:",
+                numeroAcreditacion
+            );
+
+            console.log(
+                "ID:",
+                data.id
+            );
+
+            console.log(
+                "TOTAL:",
+                total
+            );
+
+            console.log(
+                "=========================================="
+            );
+
+            return res
+                .status(201)
+                .json({
+
+                    ok: true,
+
+                    mensaje:
+                        "Acreditación creada correctamente.",
+
+                    acreditacion
+
+                });
 
         } catch (error) {
 
-            throw new Error(
-                "El servidor respondió algo que no es JSON. Código HTTP: " +
-                respuesta.status
+            console.error(
+                "ERROR GENERAL:",
+                error
             );
 
+            return res
+                .status(500)
+                .json({
+
+                    ok: false,
+
+                    mensaje:
+                        "Ocurrió un error interno en el servidor."
+
+                });
         }
-
-
-        if (
-            !respuesta.ok ||
-            !resultado.ok
-        ) {
-
-            throw new Error(
-
-                resultado.mensaje ||
-
-                resultado.error ||
-
-                "No se pudo crear la acreditación."
-
-            );
-
-        }
-
-
-        if (
-            !resultado.acreditacion
-        ) {
-
-            throw new Error(
-                "El servidor no devolvió la acreditación creada."
-            );
-
-        }
-
-
-        return resultado.acreditacion;
-
     }
+);
 
+// =====================================================
+// API — CREAR PREFERENCIA MERCADO PAGO
+// =====================================================
 
+app.post(
+    "/api/mercadopago/preferencia",
+    async function (req, res) {
 
-    /* =====================================================
-       MERCADO PAGO — PAGO REAL
-    ===================================================== */
+        try {
 
-    btnPagar.addEventListener(
-        "click",
-        async function () {
+            console.log(
+                "=========================================="
+            );
 
-            try {
+            console.log(
+                "CREANDO PREFERENCIA MERCADO PAGO"
+            );
 
-                console.log(
-                    "=========================================="
+            const acreditacionId =
+                texto(
+                    req.body?.acreditacionId
                 );
 
-                console.log(
-                    "INICIANDO PROCESO DE PAGO"
+            const numeroAcreditacion =
+                texto(
+                    req.body?.numeroAcreditacion
                 );
 
-                console.log(
-                    "=========================================="
-                );
+            if (
+                !acreditacionId ||
+                !numeroAcreditacion
+            ) {
 
+                return res
+                    .status(400)
+                    .json({
 
-                /* =============================================
-                   DESHABILITAR BOTÓN
-                ============================================= */
+                        ok: false,
 
-                btnPagar.disabled =
-                    true;
+                        mensaje:
+                            "Faltan datos para crear el pago."
 
-
-                btnPagar.textContent =
-                    "CREANDO ACREDITACIÓN...";
-
-
-                /* =============================================
-                   GUARDAR ACREDITACIÓN
-                ============================================= */
-
-                console.log(
-                    "Guardando acreditación..."
-                );
-
-
-                const acreditacion =
-                    await guardarAcreditacion();
-
-
-                console.log(
-                    "Acreditación creada:",
-                    acreditacion
-                );
-
-
-                if (
-                    !acreditacion ||
-                    !acreditacion.id ||
-                    !acreditacion.numeroAcreditacion
-                ) {
-
-                    throw new Error(
-                        "El servidor no devolvió correctamente los datos de la acreditación."
-                    );
-
-                }
-
-
-                /* =============================================
-                   GUARDAR IDENTIFICADORES
-                ============================================= */
-
-                numeroAcreditacionActual =
-                    acreditacion.numeroAcreditacion;
-
-
-                codigoSeguridadActual =
-                    acreditacion.codigoSeguridad;
-
-
-                /* =============================================
-                   CREAR PREFERENCIA MERCADO PAGO
-                ============================================= */
-
-                btnPagar.textContent =
-                    "CONECTANDO CON MERCADO PAGO...";
-
-
-                console.log(
-                    "Creando preferencia Mercado Pago..."
-                );
-
-
-                const datosPago = {
-
-                    acreditacionId:
-                        acreditacion.id,
-
-                    numeroAcreditacion:
-                        acreditacion.numeroAcreditacion,
-
-                    total:
-                        Number(
-                            acreditacion.total
-                        )
-
-                };
-
-
-                console.log(
-                    "Datos enviados a Mercado Pago:",
-                    datosPago
-                );
-
-
-                const respuesta =
-                    await fetch(
-                        URL_API +
-                        "/api/mercadopago/preferencia",
-                        {
-
-                            method:
-                                "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json",
-
-                                "Accept":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify(
-                                    datosPago
-                                )
-
-                        }
-                    );
-
-
-                console.log(
-                    "Respuesta HTTP Mercado Pago:",
-                    respuesta.status
-                );
-
-
-                /* =============================================
-                   LEER RESPUESTA
-                ============================================= */
-
-                const textoRespuesta =
-                    await respuesta.text();
-
-
-                console.log(
-                    "Respuesta del servidor:",
-                    textoRespuesta
-                );
-
-
-                let resultado;
-
-
-                try {
-
-                    resultado =
-                        JSON.parse(
-                            textoRespuesta
-                        );
-
-                } catch (error) {
-
-                    throw new Error(
-                        "El servidor respondió algo que no es JSON. Código HTTP: " +
-                        respuesta.status
-                    );
-
-                }
-
-
-                /* =============================================
-                   VERIFICAR RESPUESTA
-                ============================================= */
-
-                if (
-                    !respuesta.ok ||
-                    !resultado.ok
-                ) {
-
-                    throw new Error(
-
-                        resultado.mensaje ||
-
-                        resultado.error ||
-
-                        "El servidor no pudo crear la preferencia de Mercado Pago."
-
-                    );
-
-                }
-
-
-                /* =============================================
-                   VERIFICAR INIT POINT
-                ============================================= */
-
-                if (
-                    !resultado.initPoint
-                ) {
-
-                    console.error(
-                        "Respuesta completa de Mercado Pago:",
-                        resultado
-                    );
-
-
-                    throw new Error(
-                        "Mercado Pago no devolvió el enlace de pago."
-                    );
-
-                }
-
-
-                console.log(
-                    "PREFERENCIA CREADA CORRECTAMENTE"
-                );
-
-
-                console.log(
-                    "Preference ID:",
-                    resultado.preferenceId
-                );
-
-
-                console.log(
-                    "Init Point:",
-                    resultado.initPoint
-                );
-
-
-                /* =============================================
-                   IR A MERCADO PAGO
-                ============================================= */
-
-                btnPagar.textContent =
-                    "REDIRIGIENDO A MERCADO PAGO...";
-
-
-                window.location.href =
-                    resultado.initPoint;
-
-
-            } catch (error) {
-
-                console.error(
-                    "=========================================="
-                );
-
-                console.error(
-                    "ERROR AL INICIAR EL PAGO"
-                );
-
-                console.error(
-                    error
-                );
-
-                console.error(
-                    "=========================================="
-                );
-
-
-                alert(
-                    "NO SE PUDO INICIAR EL PAGO\n\n" +
-                    error.message +
-                    "\n\n" +
-                    "Abrí F12 → Consola para ver el detalle."
-                );
-
-
-                /* =============================================
-                   RESTAURAR BOTÓN
-                ============================================= */
-
-                btnPagar.disabled =
-                    false;
-
-
-                btnPagar.textContent =
-                    "💳 IR A MERCADO PAGO";
-
+                    });
             }
 
-        }
-    );
+            const {
+                data: acreditacionBD,
+                error: errorBusqueda
+            } =
+                await supabase
+                    .from("acreditaciones")
+                    .select("*")
+                    .eq(
+                        "id",
+                        acreditacionId
+                    )
+                    .eq(
+                        "numero_acreditacion",
+                        numeroAcreditacion
+                    )
+                    .single();
 
+            if (
+                errorBusqueda ||
+                !acreditacionBD
+            ) {
 
-
-    /* =====================================================
-       SIMULAR PAGO APROBADO
-       
-       ESTA FUNCIÓN ES SOLAMENTE PARA PRUEBAS.
-    ===================================================== */
-
-    btnSimularPago.addEventListener(
-        "click",
-        async function () {
-
-            try {
-
-                console.log(
-                    "SIMULANDO PAGO APROBADO..."
+                console.error(
+                    "ERROR BUSCANDO ACREDITACIÓN:",
+                    errorBusqueda
                 );
 
+                return res
+                    .status(404)
+                    .json({
 
-                /*
-                 * Si todavía no existe una acreditación,
-                 * primero la guardamos.
-                 */
+                        ok: false,
 
-                if (
-                    !numeroAcreditacionActual
-                ) {
+                        mensaje:
+                            "No se encontró la acreditación."
 
-                    const acreditacion =
-                        await guardarAcreditacion();
+                    });
+            }
 
+            if (
+                acreditacionBD.estado !==
+                "PENDIENTE_PAGO"
+            ) {
 
-                    if (
-                        !acreditacion ||
-                        !acreditacion.id ||
-                        !acreditacion.numeroAcreditacion
-                    ) {
+                return res
+                    .status(400)
+                    .json({
 
-                        throw new Error(
-                            "No se pudo crear la acreditación de prueba."
-                        );
+                        ok: false,
+
+                        mensaje:
+                            "Esta acreditación no está disponible para pago."
+
+                    });
+            }
+
+            const totalReal =
+                Number(
+                    acreditacionBD.total
+                );
+
+            if (
+                !Number.isFinite(
+                    totalReal
+                ) ||
+                totalReal <= 0
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "El importe de la acreditación no es válido."
+
+                    });
+            }
+
+            const preference =
+                await preferenceClient.create({
+
+                    body: {
+
+                        items: [
+
+                            {
+
+                                id:
+                                    String(
+                                        acreditacionBD.id
+                                    ),
+
+                                title:
+                                    "WOLF SHOWCARS 2027 - Acreditación " +
+                                    acreditacionBD.numero_acreditacion,
+
+                                quantity: 1,
+
+                                currency_id:
+                                    "ARS",
+
+                                unit_price:
+                                    totalReal
+
+                            }
+
+                        ],
+
+                        external_reference:
+                            acreditacionBD.numero_acreditacion,
+
+                        metadata: {
+
+                            acreditacion_id:
+                                String(
+                                    acreditacionBD.id
+                                ),
+
+                            numero_acreditacion:
+                                acreditacionBD.numero_acreditacion
+
+                        },
+
+                        back_urls: {
+
+                            success:
+                                URL_PUBLICA +
+                                "/pago-exitoso.html",
+
+                            failure:
+                                URL_PUBLICA +
+                                "/pago-fallido.html",
+
+                            pending:
+                                URL_PUBLICA +
+                                "/pago-pendiente.html"
+
+                        },
+
+                        auto_return:
+                            "approved",
+
+                        notification_url:
+                            URL_PUBLICA +
+                            "/api/mercadopago/webhook"
 
                     }
 
+                });
 
-                    numeroAcreditacionActual =
-                        acreditacion.numeroAcreditacion;
+            console.log(
+                "PREFERENCIA CREADA:"
+            );
 
+            console.log(
+                "ID:",
+                preference.id
+            );
 
-                    codigoSeguridadActual =
-                        acreditacion.codigoSeguridad;
+            console.log(
+                "ACREDITACIÓN:",
+                acreditacionBD.numero_acreditacion
+            );
 
-                }
+            console.log(
+                "TOTAL:",
+                totalReal
+            );
 
+            console.log(
+                "=========================================="
+            );
 
-                mostrarAcreditacionConfirmada();
+            return res
+                .status(201)
+                .json({
 
-            } catch (error) {
+                    ok: true,
+
+                    preferenceId:
+                        preference.id,
+
+                    initPoint:
+                        preference.init_point,
+
+                    sandboxInitPoint:
+                        preference.sandbox_init_point ||
+                        null
+
+                });
+
+        } catch (error) {
+
+            console.error(
+                "ERROR MERCADO PAGO:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+
+                    ok: false,
+
+                    mensaje:
+                        "No se pudo crear el pago de Mercado Pago.",
+
+                    error:
+                        error.message
+
+                });
+        }
+    }
+);
+
+// =====================================================
+// WEBHOOK MERCADO PAGO
+// =====================================================
+
+app.post(
+    "/api/mercadopago/webhook",
+    async function (req, res) {
+
+        console.log(
+            "=========================================="
+        );
+
+        console.log(
+            "WEBHOOK MERCADO PAGO RECIBIDO"
+        );
+
+        const body =
+            req.body || {};
+
+        const tipo =
+            texto(
+                body.type ||
+                req.query.type
+            );
+
+        const dataId =
+            texto(
+                req.query["data.id"]
+            );
+
+        console.log(
+            "Tipo:",
+            tipo
+        );
+
+        console.log(
+            "Data ID:",
+            dataId
+        );
+
+        // =================================================
+        // VALIDAR FIRMA ANTES DE PROCESAR
+        // =================================================
+
+        try {
+
+            const resultadoFirma =
+                validarFirmaWebhookMercadoPago(
+                    req,
+                    dataId
+                );
+
+            if (
+                !resultadoFirma.valida
+            ) {
 
                 console.error(
-                    "ERROR EN SIMULACIÓN:",
+                    "WEBHOOK RECHAZADO:"
+                );
+
+                console.error(
+                    resultadoFirma.motivo
+                );
+
+                return res
+                    .status(401)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "Firma de webhook inválida."
+
+                    });
+            }
+
+            console.log(
+                "Firma webhook: VÁLIDA"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "ERROR VALIDANDO FIRMA WEBHOOK:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+
+                    ok: false,
+
+                    mensaje:
+                        "No se pudo validar la firma del webhook."
+
+                });
+        }
+
+        // =================================================
+        // RESPUESTA RÁPIDA A MERCADO PAGO
+        // =================================================
+
+        res
+            .status(200)
+            .json({
+                ok: true
+            });
+
+        // =================================================
+        // PROCESAMIENTO
+        // =================================================
+
+        try {
+
+            // =================================================
+            // SOLO PROCESAMOS PAGOS
+            // =================================================
+
+            if (
+                tipo !== "payment"
+            ) {
+
+                console.log(
+                    "Notificación ignorada. Tipo:",
+                    tipo
+                );
+
+                return;
+            }
+
+            if (
+                !dataId
+            ) {
+
+                console.error(
+                    "Webhook sin data.id."
+                );
+
+                return;
+            }
+
+            // =================================================
+            // CONSULTAR PAGO REAL A MERCADO PAGO
+            // =================================================
+
+            const paymentResponse =
+                await fetch(
+                    "https://api.mercadopago.com/v1/payments/" +
+                    encodeURIComponent(
+                        dataId
+                    ),
+                    {
+
+                        method:
+                            "GET",
+
+                        headers: {
+
+                            Authorization:
+                                "Bearer " +
+                                process.env.MP_ACCESS_TOKEN,
+
+                            Accept:
+                                "application/json"
+
+                        }
+
+                    }
+                );
+
+            if (
+                !paymentResponse.ok
+            ) {
+
+                console.error(
+                    "ERROR CONSULTANDO PAGO:"
+                );
+
+                console.error(
+                    "HTTP:",
+                    paymentResponse.status
+                );
+
+                console.error(
+                    await paymentResponse.text()
+                );
+
+                return;
+            }
+
+            const payment =
+                await paymentResponse.json();
+
+            console.log(
+                "PAYMENT ID:",
+                payment.id
+            );
+
+            console.log(
+                "ESTADO:",
+                payment.status
+            );
+
+            console.log(
+                "STATUS DETAIL:",
+                payment.status_detail
+            );
+
+            console.log(
+                "EXTERNAL REFERENCE:",
+                payment.external_reference
+            );
+
+            console.log(
+                "IMPORTE:",
+                payment.transaction_amount
+            );
+
+            console.log(
+                "MONEDA:",
+                payment.currency_id
+            );
+
+            // =================================================
+            // SOLO PRODUCCIÓN
+            // =================================================
+
+            if (
+                payment.live_mode !== true
+            ) {
+
+                console.error(
+                    "Pago rechazado: no corresponde a una operación de producción."
+                );
+
+                return;
+            }
+
+            // =================================================
+            // SOLO APROBADOS
+            // =================================================
+
+            if (
+                payment.status !==
+                "approved"
+            ) {
+
+                console.log(
+                    "Pago todavía no aprobado:",
+                    payment.status
+                );
+
+                return;
+            }
+
+            // =================================================
+            // VALIDAR MONEDA
+            // =================================================
+
+            if (
+                payment.currency_id !==
+                "ARS"
+            ) {
+
+                console.error(
+                    "Pago rechazado: moneda inválida:",
+                    payment.currency_id
+                );
+
+                return;
+            }
+
+            // =================================================
+            // OBTENER REFERENCIA
+            // =================================================
+
+            const numeroAcreditacion =
+                texto(
+                    payment.external_reference
+                );
+
+            if (
+                !numeroAcreditacion
+            ) {
+
+                console.error(
+                    "Pago rechazado: falta external_reference."
+                );
+
+                return;
+            }
+
+            // =================================================
+            // BUSCAR ACREDITACIÓN
+            // =================================================
+
+            const {
+                data: acreditacion,
+                error: errorBusqueda
+            } =
+                await supabase
+                    .from("acreditaciones")
+                    .select("*")
+                    .eq(
+                        "numero_acreditacion",
+                        numeroAcreditacion
+                    )
+                    .maybeSingle();
+
+            if (
+                errorBusqueda
+            ) {
+
+                console.error(
+                    "ERROR BUSCANDO ACREDITACIÓN:",
+                    errorBusqueda
+                );
+
+                return;
+            }
+
+            if (
+                !acreditacion
+            ) {
+
+                console.error(
+                    "NO SE ENCONTRÓ LA ACREDITACIÓN:",
+                    numeroAcreditacion
+                );
+
+                return;
+            }
+
+            // =================================================
+            // VALIDAR METADATA
+            // =================================================
+
+            if (
+                payment.metadata
+            ) {
+
+                const metadataId =
+                    texto(
+                        payment.metadata.acreditacion_id
+                    );
+
+                const metadataNumero =
+                    texto(
+                        payment.metadata.numero_acreditacion
+                    );
+
+                if (
+                    metadataId &&
+                    metadataId !==
+                    String(
+                        acreditacion.id
+                    )
+                ) {
+
+                    console.error(
+                        "Pago rechazado: metadata.acreditacion_id no coincide."
+                    );
+
+                    return;
+                }
+
+                if (
+                    metadataNumero &&
+                    metadataNumero !==
+                    acreditacion.numero_acreditacion
+                ) {
+
+                    console.error(
+                        "Pago rechazado: metadata.numero_acreditacion no coincide."
+                    );
+
+                    return;
+                }
+            }
+
+            // =================================================
+            // VALIDAR IMPORTE
+            // =================================================
+
+            const importeMercadoPago =
+                Number(
+                    payment.transaction_amount
+                );
+
+            const importeAcreditacion =
+                Number(
+                    acreditacion.total
+                );
+
+            if (
+                !Number.isFinite(
+                    importeMercadoPago
+                ) ||
+                !Number.isFinite(
+                    importeAcreditacion
+                )
+            ) {
+
+                console.error(
+                    "Pago rechazado: importe inválido."
+                );
+
+                return;
+            }
+
+            if (
+                importeMercadoPago !==
+                importeAcreditacion
+            ) {
+
+                console.error(
+                    "=========================================="
+                );
+
+                console.error(
+                    "ALERTA: IMPORTE NO COINCIDE"
+                );
+
+                console.error(
+                    "Mercado Pago:",
+                    importeMercadoPago
+                );
+
+                console.error(
+                    "Supabase:",
+                    importeAcreditacion
+                );
+
+                console.error(
+                    "=========================================="
+                );
+
+                return;
+            }
+
+            // =================================================
+            // VERIFICAR SI PAYMENT ID YA FUE UTILIZADO
+            // =================================================
+
+            const {
+                data: pagoExistente,
+                error: errorPagoExistente
+            } =
+                await supabase
+                    .from("acreditaciones")
+                    .select(
+                        "id, numero_acreditacion, estado"
+                    )
+                    .eq(
+                        "mercado_pago_payment_id",
+                        String(
+                            payment.id
+                        )
+                    )
+                    .maybeSingle();
+
+            if (
+                errorPagoExistente
+            ) {
+
+                console.error(
+                    "ERROR COMPROBANDO PAYMENT ID:",
+                    errorPagoExistente
+                );
+
+                return;
+            }
+
+            if (
+                pagoExistente &&
+                pagoExistente.id !==
+                acreditacion.id
+            ) {
+
+                console.error(
+                    "ALERTA: PAYMENT ID YA UTILIZADO EN OTRA ACREDITACIÓN."
+                );
+
+                console.error(
+                    "Payment ID:",
+                    payment.id
+                );
+
+                console.error(
+                    "Acreditación actual:",
+                    acreditacion.numero_acreditacion
+                );
+
+                console.error(
+                    "Acreditación anterior:",
+                    pagoExistente.numero_acreditacion
+                );
+
+                return;
+            }
+
+            // =================================================
+            // IDEMPOTENCIA
+            // =================================================
+
+            if (
+                acreditacion.estado ===
+                "PAGADO"
+            ) {
+
+                console.log(
+                    "El pago ya estaba registrado."
+                );
+
+                console.log(
+                    "Acreditación:",
+                    acreditacion.numero_acreditacion
+                );
+
+                return;
+            }
+
+            // =================================================
+            // SOLO PENDIENTE DE PAGO
+            // =================================================
+
+            if (
+                acreditacion.estado !==
+                "PENDIENTE_PAGO"
+            ) {
+
+                console.error(
+                    "La acreditación no está pendiente de pago."
+                );
+
+                console.error(
+                    "Estado actual:",
+                    acreditacion.estado
+                );
+
+                return;
+            }
+
+            // =================================================
+            // ACTUALIZAR SUPABASE
+            // =================================================
+
+            const {
+                data: actualizada,
+                error: errorActualizacion
+            } =
+                await supabase
+                    .from("acreditaciones")
+                    .update({
+
+                        estado:
+                            "PAGADO",
+
+                        mercado_pago_payment_id:
+                            String(
+                                payment.id
+                            )
+
+                    })
+                    .eq(
+                        "id",
+                        acreditacion.id
+                    )
+                    .eq(
+                        "estado",
+                        "PENDIENTE_PAGO"
+                    )
+                    .select()
+                    .maybeSingle();
+
+            if (
+                errorActualizacion
+            ) {
+
+                console.error(
+                    "ERROR ACTUALIZANDO SUPABASE:"
+                );
+
+                console.error(
+                    errorActualizacion
+                );
+
+                return;
+            }
+
+            // =================================================
+            // CONTROL DE ACTUALIZACIÓN
+            // =================================================
+
+            if (
+                !actualizada
+            ) {
+
+                console.log(
+                    "La acreditación pudo haber sido procesada simultáneamente."
+                );
+
+                return;
+            }
+
+            // =================================================
+            // PAGO CONFIRMADO
+            // =================================================
+
+            console.log(
+                "=========================================="
+            );
+
+            console.log(
+                "PAGO CONFIRMADO"
+            );
+
+            console.log(
+                "ACREDITACIÓN:",
+                numeroAcreditacion
+            );
+
+            console.log(
+                "PAYMENT ID:",
+                payment.id
+            );
+
+            console.log(
+                "TOTAL:",
+                payment.transaction_amount
+            );
+
+            console.log(
+                "SUPABASE:",
+                actualizada.estado
+            );
+
+            console.log(
+                "=========================================="
+            );
+
+        } catch (error) {
+
+            console.error(
+                "ERROR PROCESANDO WEBHOOK:",
+                error
+            );
+        }
+    }
+);
+
+// =====================================================
+// API — CONSULTAR ESTADO DE ACREDITACIÓN
+// =====================================================
+
+app.get(
+    "/api/acreditaciones/:numero/estado",
+    async function (req, res) {
+
+        try {
+
+            const numero =
+                texto(
+                    req.params.numero
+                );
+
+            if (
+                !numero
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "Número de acreditación inválido."
+
+                    });
+            }
+
+            const {
+                data,
+                error
+            } =
+                await supabase
+                    .from("acreditaciones")
+                    .select(
+                        `
+                        numero_acreditacion,
+                        estado,
+                        marca,
+                        modelo,
+                        anio,
+                        patente,
+                        acompanantes,
+                        total
+                        `
+                    )
+                    .eq(
+                        "numero_acreditacion",
+                        numero
+                    )
+                    .maybeSingle();
+
+            if (
+                error
+            ) {
+
+                console.error(
+                    "ERROR CONSULTANDO ESTADO:",
                     error
                 );
 
+                return res
+                    .status(500)
+                    .json({
 
-                alert(
-                    "NO SE PUDO SIMULAR EL PAGO\n\n" +
-                    error.message
-                );
+                        ok: false,
 
+                        mensaje:
+                            "No se pudo consultar el estado."
+
+                    });
             }
 
+            if (
+                !data
+            ) {
+
+                return res
+                    .status(404)
+                    .json({
+
+                        ok: false,
+
+                        mensaje:
+                            "Acreditación no encontrada."
+
+                    });
+            }
+
+            return res.json({
+
+                ok: true,
+
+                acreditacion: {
+
+                    numeroAcreditacion:
+                        data.numero_acreditacion,
+
+                    estado:
+                        data.estado,
+
+                    marca:
+                        data.marca,
+
+                    modelo:
+                        data.modelo,
+
+                    anio:
+                        data.anio,
+
+                    patente:
+                        data.patente,
+
+                    acompanantes:
+                        data.acompanantes,
+
+                    total:
+                        data.total
+
+                }
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "ERROR ESTADO:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+
+                    ok: false,
+
+                    mensaje:
+                        "Error interno del servidor."
+
+                });
         }
-    );
-
-
-
-    /* =====================================================
-       MOSTRAR ACREDITACIÓN CONFIRMADA
-    ===================================================== */
-
-    function mostrarAcreditacionConfirmada() {
-
-        pantallaPago.style.display =
-            "none";
-
-
-        resumenFinal.style.display =
-            "none";
-
-
-        formulario.style.display =
-            "none";
-
-
-        acreditacionConfirmada.classList.add(
-            "acreditacion-confirmada-visible"
-        );
-
-
-        /* =============================================
-           DATOS
-        ============================================= */
-
-        document.getElementById(
-            "numeroAcreditacion"
-        ).textContent =
-            numeroAcreditacionActual;
-
-
-        document.getElementById(
-            "confirmadoNombre"
-        ).textContent =
-            document.getElementById(
-                "nombre"
-            ).value.trim();
-
-
-        document.getElementById(
-            "confirmadoDni"
-        ).textContent =
-            document.getElementById(
-                "dni"
-            ).value.trim();
-
-
-        document.getElementById(
-            "confirmadoTelefono"
-        ).textContent =
-            document.getElementById(
-                "telefono"
-            ).value.trim();
-
-
-        document.getElementById(
-            "confirmadoMarca"
-        ).textContent =
-            document.getElementById(
-                "marca"
-            ).value.trim();
-
-
-        document.getElementById(
-            "confirmadoModelo"
-        ).textContent =
-            document.getElementById(
-                "modelo"
-            ).value.trim();
-
-
-        document.getElementById(
-            "confirmadoAnio"
-        ).textContent =
-            document.getElementById(
-                "anio"
-            ).value.trim();
-
-
-        document.getElementById(
-            "confirmadoPatente"
-        ).textContent =
-            document.getElementById(
-                "patente"
-            )
-            .value
-            .trim()
-            .toUpperCase();
-
-
-        document.getElementById(
-            "confirmadoAcompanantes"
-        ).textContent =
-            cantidadAcompanantes;
-
-
-        document.getElementById(
-            "confirmadoTotal"
-        ).textContent =
-            formatoDinero(
-                obtenerTotal()
-            );
-
-
-        /* =============================================
-           GENERAR QR
-        ============================================= */
-
-        const codigoQR =
-            document.getElementById(
-                "codigoQR"
-            );
-
-
-        codigoQR.innerHTML =
-            "";
-
-
-        new QRCode(
-            codigoQR,
-            {
-
-                text:
-                    numeroAcreditacionActual,
-
-                width:
-                    220,
-
-                height:
-                    220,
-
-                correctLevel:
-                    QRCode.CorrectLevel.H
-
-            }
-        );
-
-
-        acreditacionConfirmada.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
     }
+);
 
+// =====================================================
+// API — ESTADO DEL SERVIDOR
+// =====================================================
 
+app.get(
+    "/api/estado",
+    function (req, res) {
 
-    /* =====================================================
-       IMPRIMIR / GUARDAR PDF
-    ===================================================== */
+        res.json({
 
-    btnImprimirAcreditacion.addEventListener(
-        "click",
-        function () {
+            ok: true,
 
-            window.print();
+            servidor:
+                "WOLF SHOWCARS",
 
+            evento:
+                "WOLF SHOWCARS 2027",
+
+            estado:
+                "FUNCIONANDO",
+
+            puerto:
+                PORT,
+
+            urlPublica:
+                URL_PUBLICA,
+
+            supabase:
+                "CONFIGURADO",
+
+            mercadoPago:
+                process.env.MP_ACCESS_TOKEN
+                    ? "CONFIGURADO"
+                    : "NO CONFIGURADO",
+
+            webhook:
+                process.env.MP_WEBHOOK_SECRET
+                    ? "PROTEGIDO"
+                    : "NO CONFIGURADO",
+
+            webhookUrl:
+                URL_PUBLICA +
+                "/api/mercadopago/webhook",
+
+            fecha:
+                new Date().toISOString()
+
+        });
+    }
+);
+
+// =====================================================
+// ARCHIVOS ESTÁTICOS
+// =====================================================
+
+app.use(
+    express.static(
+        path.join(
+            __dirname,
+            ".."
+        )
+    )
+);
+
+// =====================================================
+// PÁGINA PRINCIPAL
+// =====================================================
+
+app.get(
+    "/",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "..",
+                "index.html"
+            )
+        );
+    }
+);
+
+// =====================================================
+// API 404
+// =====================================================
+
+app.use(
+    "/api",
+    function (req, res) {
+
+        console.error(
+            "API 404:",
+            req.method,
+            req.originalUrl
+        );
+
+        res
+            .status(404)
+            .json({
+
+                ok: false,
+
+                mensaje:
+                    "Ruta API no encontrada.",
+
+                metodo:
+                    req.method,
+
+                ruta:
+                    req.originalUrl
+
+            });
+    }
+);
+
+// =====================================================
+// MANEJO GLOBAL DE ERRORES
+// =====================================================
+
+app.use(
+    function (
+        error,
+        req,
+        res,
+        next
+    ) {
+
+        console.error(
+            "ERROR NO CONTROLADO:",
+            error
+        );
+
+        if (
+            res.headersSent
+        ) {
+
+            return next(error);
         }
-    );
 
+        res
+            .status(500)
+            .json({
 
+                ok: false,
 
-    /* =====================================================
-       VOLVER AL INICIO
-    ===================================================== */
+                mensaje:
+                    "Error interno del servidor."
 
-    btnVolverInicio.addEventListener(
-        "click",
-        function () {
+            });
+    }
+);
 
-            window.location.href =
-                "#inicio";
+// =====================================================
+// INICIAR SERVIDOR
+// =====================================================
 
+app.listen(
+    PORT,
+    function () {
 
-            window.location.reload();
+        console.log(
+            "=========================================="
+        );
 
-        }
-    );
+        console.log(
+            " WOLF SHOWCARS 2027"
+        );
 
+        console.log(
+            " SERVIDOR BACKEND"
+        );
 
+        console.log(
+            "=========================================="
+        );
 
-    /* =====================================================
-       INICIALIZAR
-    ===================================================== */
+        console.log(
+            "Puerto:",
+            PORT
+        );
 
-    actualizarTotal();
+        console.log(
+            "Local:",
+            `http://localhost:${PORT}`
+        );
 
-    </script>
+        console.log(
+            "URL pública:",
+            URL_PUBLICA
+        );
 
-</body>
+        console.log(
+            "Supabase: CONFIGURADO"
+        );
 
-</html>
-```
+        console.log(
+            "Mercado Pago: CONFIGURADO"
+        );
+
+        console.log(
+            "Webhook:",
+            process.env.MP_WEBHOOK_SECRET
+                ? "PROTEGIDO"
+                : "NO CONFIGURADO"
+        );
+
+        console.log(
+            "URL Webhook:"
+        );
+
+        console.log(
+            URL_PUBLICA +
+            "/api/mercadopago/webhook"
+        );
+
+        console.log(
+            "=========================================="
+        );
+    }
+);
