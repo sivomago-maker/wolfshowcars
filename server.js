@@ -2038,10 +2038,7 @@ app.get(
 
 app.use(
     express.static(
-        path.join(
-            __dirname,
-            ".."
-        )
+        __dirname
     )
 );
 
@@ -2056,13 +2053,12 @@ app.get(
         res.sendFile(
             path.join(
                 __dirname,
-                "..",
                 "index.html"
             )
         );
     }
 );
-
+       
 // =====================================================
 // API 404
 // =====================================================
