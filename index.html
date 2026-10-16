@@ -1,0 +1,766 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOLF SHOWCARS 2027</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <header class="navbar">
+        <div class="nav-brand">
+            <div class="logo">
+                <img
+                    src="./img/logo/PNGwolfsHOW (1).png"
+                    alt="WOLF SHOWCARS"
+                >
+            </div>
+
+            <a href="#sponsors" class="sponsors-nav-btn">SPONSORS</a>
+        </div>
+
+        <nav>
+            <a href="#inicio">INICIO</a>
+            <a href="#evento">EVENTO</a>
+            <a href="#autos">AUTOS</a>
+            <a href="#motos">MOTOS</a>
+            <a href="#stands">STANDS</a>
+            <a href="#contacto">CONTACTO</a>
+        </nav>
+
+        <button
+            class="menu-btn"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            type="button"
+        >☰</button>
+    </header>
+
+    <main>
+
+        <!-- PORTADA -->
+        <section id="inicio" class="hero">
+            <div class="hero-background"></div>
+            <div class="hero-overlay"></div>
+
+            <div class="hero-content">
+                <p class="hero-small">EDICIÓN IV</p>
+
+                <div class="hero-title-wrap">
+                    <h1 class="hero-title">
+                        WOLF
+                        <span class="hero-title-showcars">SHOWCARS</span>
+                    </h1>
+
+                    <div class="hero-mascot">
+                        <img
+                            src="./img/lobo-solidario.png"
+                            alt="Personaje solidario de WOLF SHOWCARS a beneficio de la Escuela N.º 501"
+                        >
+                    </div>
+                </div>
+
+                <p class="hero-year">2027</p>
+
+                <div class="hero-info">
+                    <div class="hero-date">27 &amp; 28 DE FEBRERO</div>
+
+                    <!-- UBICACIÓN DESTACADA CON BOTÓN A GOOGLE MAPS -->
+                    <div class="hero-location-block">
+
+                        <div class="hero-location-heading">
+                            <span class="location-pin" aria-hidden="true"></span>
+
+                            <div class="hero-location-copy">
+                                <span class="hero-location-eyebrow">
+                                    EL PUNTO DE ENCUENTRO
+                                </span>
+
+                                <span class="hero-location-name">
+                                    <span>SOCIEDAD RURAL</span>
+                                    <span>ROQUE PÉREZ</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <a
+                            class="hero-location-button"
+                            href="https://www.google.com/maps/place/35%C2%B022'57.3%22S+59%C2%B020'57.5%22W/@-35.3825769,-59.3499447,154m/data=!3m2!1e3!4b1!4m4!3m3!8m2!3d-35.382578!4d-59.349301?entry=ttu&amp;g_ep=EgoyMDI2MTAwNy4wIKXMDSoASAFQAw%3D%3D"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Cómo llegar a WOLF SHOWCARS en Google Maps"
+                        >
+                            <span>CÓMO LLEGAR</span>
+                            <span class="location-button-arrow" aria-hidden="true">↗</span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="hero-buttons">
+                    <a
+                        href="https://wa.me/5492227442267?text=Hola%2C%20quiero%20acreditar%20mi%20auto%20para%20WOLF%20SHOWCARS%202027"
+                        class="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >ACREDITAR MI AUTO</a>
+
+                    <!-- ESTE BOTÓN BAJA DIRECTAMENTE A LOS PRECIOS -->
+                    <a
+                        href="#precios-stands"
+                        class="btn btn-secondary"
+                    >POSTULAR MI STAND</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- INFORMACIÓN DEL EVENTO -->
+        <section id="evento" class="section">
+            <div class="section-title">
+                <p>WOLF SHOWCARS</p>
+                <h2>LA MANADA</h2>
+            </div>
+
+            <div class="event-text">
+                <p>
+                    Una experiencia automotriz donde se encuentran autos
+                    multimarcas, clásicos, deportivos, personalizados, motos
+                    y toda la comunidad que forma parte de la manada WOLF.
+                </p>
+
+                <p>
+                    <strong>En 2027 estrenamos un nuevo predio</strong>, amplio y
+                    preparado para disfrutar cada sector de exposición, con
+                    distintas superficies para los vehículos, espacios cómodos
+                    para peatones, patio de comidas, cantina y stands de todo
+                    tipo. Un lugar ideal para disfrutar del evento y llevarte
+                    excelentes imágenes.
+                </p>
+
+                <p>
+                    Contaremos con la cobertura audiovisual exclusiva de
+                    <strong>Sebastián, de SE Audiovisual</strong>, y
+                    <strong>Bianco, de POTTY ESTETIK</strong>, a través de su canal
+                    de YouTube, además de la
+                    <strong>cobertura aérea con dron de LGMP-AIR</strong>.
+                </p>
+
+                <p>
+                    Renovamos nuestro compromiso solidario a beneficio de la
+                    <strong>Escuela de Educación Especial N.º 501 de Roque Pérez</strong>.
+                    Además, el sábado 27 de febrero cerraremos la jornada con una
+                    gran fiesta nocturna en el predio, de la mano de
+                    <strong>NÓMADE PRODUCCIONES</strong>.
+                </p>
+
+                <p>
+                    <strong>WOLF SHOWCARS 2027: motores, comunidad, solidaridad
+                    y una experiencia para vivirla a pleno.</strong>
+                </p>
+            </div>
+
+            <!-- COLABORADORES -->
+            <div class="event-partners">
+                <a
+                    href="https://www.instagram.com/se.audiovisual"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visitar Instagram de SE Audiovisual"
+                >
+                    <img
+                        src="./img/colaboradores/se-audiovisual.png"
+                        alt="SE Audiovisual"
+                        loading="lazy"
+                    >
+                </a>
+
+                <a
+                    href="https://www.instagram.com/pottyestetik"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visitar Instagram de Potty Estetik"
+                >
+                    <img
+                        src="./img/colaboradores/potty-estetik.png"
+                        alt="Potty Estetik"
+                        loading="lazy"
+                    >
+                </a>
+
+                <a
+                    href="https://www.instagram.com/lgmp_air_"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visitar Instagram de LGMP-AIR"
+                >
+                    <img
+                        src="./img/colaboradores/lgmp-air.png"
+                        alt="LGMP-AIR"
+                        loading="lazy"
+                    >
+                </a>
+            </div>
+        </section>
+
+        <!-- WOLF FEST: FIESTA NOCTURNA -->
+        <section id="wolf-fest" class="wolf-party-section">
+            <div class="wolf-party-inner">
+
+                <p class="wolf-party-eyebrow">
+                    WOLF SHOWCARS 2027 PRESENTA
+                </p>
+
+                <h2 class="wolf-party-title">
+                    WOLF <span>FEST</span>
+                </h2>
+
+                <div class="wolf-party-divider"></div>
+
+                <p class="wolf-party-slogan">LA NOCHE SE ENCIENDE</p>
+
+                <div class="wolf-party-date">
+                    <span class="wolf-party-date-label">SÁBADO</span>
+                    <strong>27</strong>
+                    <span class="wolf-party-date-month">FEBRERO · 2027</span>
+                </div>
+
+                <p class="wolf-party-description">
+                    La jornada continúa dentro del predio.
+                    Música, encuentro y una noche para disfrutar
+                    después de la exposición.
+                </p>
+
+                <div class="wolf-party-venue">
+                    <span class="wolf-party-venue-line"></span>
+                    <span>SOCIEDAD RURAL · ROQUE PÉREZ</span>
+                    <span class="wolf-party-venue-line"></span>
+                </div>
+
+                <!-- ESPACIO RESERVADO PARA EL FLYER OFICIAL -->
+                <div class="wolf-party-flyer">
+                    <div class="wolf-party-flyer-content">
+                        <span class="wolf-party-flyer-mark">W / F</span>
+                        <p>LA FIESTA DE WOLF SHOWCARS</p>
+                        <span>PRÓXIMAMENTE · FLYER OFICIAL</span>
+                    </div>
+                </div>
+
+                <!-- PRODUCCIÓN DE LA FIESTA -->
+                <div class="wolf-party-producer">
+                    <p class="wolf-party-producer-label">LA FIESTA, JUNTO A</p>
+
+                    <a
+                        class="wolf-party-nomade"
+                        href="https://www.instagram.com/nomade.producciones.ok"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Visitar Instagram de Nómade Producciones"
+                    >
+                        <img
+                            src="./img/sponsors/nomade1.png"
+                            alt="Nómade Producciones"
+                            loading="lazy"
+                        >
+                    </a>
+
+                    <p class="wolf-party-producer-description">
+                        Conocé su propuesta y consultá por las preventas.
+                    </p>
+
+                    <div class="wolf-party-actions">
+                        <a
+                            class="wolf-party-btn wolf-party-btn-primary"
+                            href="https://wa.me/5492227626551?text=Hola%2C%20quiero%20consultar%20por%20la%20preventa%20de%20WOLF%20FEST%202027."
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            PREVENTA POR WHATSAPP
+                            <span aria-hidden="true">↗</span>
+                        </a>
+
+                        <a
+                            class="wolf-party-btn wolf-party-btn-secondary"
+                            href="https://www.instagram.com/nomade.producciones.ok"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            INSTAGRAM DE NÓMADE
+                            <span aria-hidden="true">↗</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- AUTOS -->
+        <section id="autos" class="section dark-section">
+            <div class="section-title">
+                <p>EXPOSICIÓN</p>
+                <h2>AUTOS</h2>
+            </div>
+
+            <div class="cards">
+                <article class="card">
+                    <h3>CLÁSICOS</h3>
+                    <p>Vehículos con historia y personalidad.</p>
+                </article>
+
+                <article class="card">
+                    <h3>DEPORTIVOS</h3>
+                    <p>Potencia, diseño y performance.</p>
+                </article>
+
+                <article class="card">
+                    <h3>PERSONALIZADOS</h3>
+                    <p>Proyectos únicos de cada integrante de la manada.</p>
+                </article>
+
+                <article class="card">
+                    <h3>BAJITOS</h3>
+                    <p>Estilo, suspensión y actitud.</p>
+                </article>
+
+                <article class="card">
+                    <h3>CAMIONETAS</h3>
+                    <p>Presencia, potencia y estilo.</p>
+                </article>
+
+                <article class="card">
+                    <h3>CAMIONES</h3>
+                    <p>Potencia, tamaño y personalidad.</p>
+                </article>
+            </div>
+
+            <!-- EXPOSICIÓN DE MOTOS -->
+            <div id="motos" class="motos-exposicion">
+                <div class="motos-title">
+                    <p>EXPOSICIÓN</p>
+                    <h2>MOTOS</h2>
+                </div>
+
+                <div class="cards motos-cards">
+                    <article class="card">
+                        <h3>CLÁSICAS</h3>
+                        <p>Motos con historia, estilo y personalidad.</p>
+                    </article>
+
+                    <article class="card">
+                        <h3>ALTA CILINDRADA</h3>
+                        <p>Potencia, diseño y presencia.</p>
+                    </article>
+
+                    <article class="card">
+                        <h3>MOTOCROSS</h3>
+                        <p>Adrenalina, potencia y competición.</p>
+                    </article>
+
+                    <article class="card">
+                        <h3>ENDURO</h3>
+                        <p>Aventura, resistencia y terreno.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- STANDS -->
+        <section id="stands" class="section">
+            <div class="section-title">
+                <p>FORMÁ PARTE</p>
+                <h2>STANDS</h2>
+            </div>
+
+            <div class="stand-content">
+
+                <h3 class="stand-main-title">
+                    POSTULÁ TU STAND EN WOLF SHOWCARS 2027
+                </h3>
+
+                <p class="stand-intro">
+                    ¿Tenés un emprendimiento, una marca o un producto que querés
+                    mostrar? ¡Sumate a la manada y formá parte de WOLF SHOWCARS 2027!
+                </p>
+
+                <p class="stand-subtitle">
+                    Para que puedas organizar tu espacio y exhibir tus productos
+                    durante la expo, establecimos los siguientes valores de
+                    participación, correspondientes a los dos días del evento.
+                </p>
+
+                <!-- VALORES DE LOS ESPACIOS -->
+                <div class="stand-prices" id="precios-stands">
+
+                    <article class="stand-price-card">
+                        <h3 class="stand-price-size">1 GAZEBO</h3>
+                        <p class="stand-price-measure">3 × 3 METROS</p>
+                        <p class="stand-price-value">$50.000</p>
+                        <span class="stand-price-period">LOS DOS DÍAS</span>
+                    </article>
+
+                    <article class="stand-price-card">
+                        <h3 class="stand-price-size">2 GAZEBOS</h3>
+                        <p class="stand-price-measure">3 × 6 METROS</p>
+                        <p class="stand-price-value">$70.000</p>
+                        <span class="stand-price-period">LOS DOS DÍAS</span>
+                    </article>
+
+                    <article class="stand-price-card">
+                        <h3 class="stand-price-size">3 GAZEBOS</h3>
+                        <p class="stand-price-measure">3 × 9 METROS</p>
+                        <p class="stand-price-value">$100.000</p>
+                        <span class="stand-price-period">LOS DOS DÍAS</span>
+                    </article>
+
+                </div>
+
+                <p class="stand-event-dates">
+                    Valores correspondientes al 27 y 28 de febrero de 2027.
+                </p>
+
+                <!-- DESCUENTO POR PARTICIPAR UN SOLO DÍA -->
+                <div class="stand-one-day">
+                    <h3>¿PARTICIPÁS UN SOLO DÍA?</h3>
+
+                    <p>
+                        Si tu emprendimiento va a estar presente durante una sola
+                        jornada, se aplicará un descuento de <strong>$10.000</strong>
+                        sobre el valor correspondiente a cada espacio indicado.
+                    </p>
+
+                    <div class="stand-one-day-prices">
+                        <div class="stand-one-day-price">
+                            <span>3 × 3 METROS</span>
+                            <strong>$40.000</strong>
+                        </div>
+
+                        <div class="stand-one-day-price">
+                            <span>3 × 6 METROS</span>
+                            <strong>$60.000</strong>
+                        </div>
+
+                        <div class="stand-one-day-price">
+                            <span>3 × 9 METROS</span>
+                            <strong>$90.000</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INFORMACIÓN PARA POSTULAR -->
+                <div class="stand-application-info">
+                    <h3>¿CÓMO POSTULAR TU STAND?</h3>
+
+                    <p>
+                        Si querés reservar tu lugar, conocer más detalles o consultar
+                        por otras medidas de espacio, hacé clic en el botón
+                        <strong>POSTULAR MI STAND</strong> y comunicate con nuestra
+                        organización.
+                    </p>
+                </div>
+
+                <!-- INFORMACIÓN PARA EMPRENDIMIENTOS GASTRONÓMICOS -->
+                <div class="stand-gastronomic-info">
+                    <h3>¿TENÉS UN EMPRENDIMIENTO GASTRONÓMICO?</h3>
+
+                    <p>
+                        Si tu propuesta es gastronómica, ingresá a través del botón
+                        <strong>GASTRONÓMICOS</strong> e informanos cuál es tu rubro
+                        para que podamos evaluar tu propuesta.
+                    </p>
+                </div>
+
+                <p class="stand-closing">
+                    Los espacios son una oportunidad para mostrar tu marca,
+                    conectar con nuevos clientes y ser parte de una experiencia
+                    que reúne motores, emprendimientos y pasión fierrera.
+                </p>
+
+                <p class="stand-welcome">
+                    ¡TE ESPERAMOS EN WOLF SHOWCARS 2027!
+                </p>
+
+                <!-- BOTONES DE CONTACTO -->
+                <div class="stand-buttons">
+
+                    <a
+                        href="https://wa.me/5492227442267?text=Hola%2C%20quiero%20postular%20mi%20stand%20para%20WOLF%20SHOWCARS%202027.%20Quisiera%20consultar%20por%20los%20espacios%20disponibles."
+                        class="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >POSTULAR MI STAND</a>
+
+                    <a
+                        href="https://wa.me/5492227442267?text=Hola%2C%20tengo%20un%20emprendimiento%20gastron%C3%B3mico%20y%20quiero%20postularlo%20para%20WOLF%20SHOWCARS%202027.%20Mi%20rubro%20es%3A%20"
+                        class="btn btn-secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >GASTRONÓMICOS</a>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SPONSORS WOLF SHOWCARS 2027 -->
+        <section id="sponsors" class="sponsors-section">
+            <div class="sponsors-header">
+                <span class="sponsors-subtitle">WOLF SHOWCARS 2027</span>
+                <h2>NUESTROS <span>SPONSORS</span></h2>
+                <p>Gracias por ser parte de esta gran manada.</p>
+            </div>
+
+            <div class="sponsors-grid">
+
+                <!-- 1. DARIO MECANICA -->
+                <a
+                    class="sponsor-card"
+                    href="https://wa.me/5492227442267"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Contactar a Dario Mecanica por WhatsApp"
+                >
+                    <img
+                        src="./img/sponsors/dariomecanica.png"
+                        alt="Dario Mecanica"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">CONTACTAR POR WHATSAPP</span>
+                </a>
+
+                <!-- 2. ENFIERRADOS AL TOP -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/enfierrados_altop"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de Enfierrados al top"
+                >
+                    <img
+                        src="./img/sponsors/enfierrados.png"
+                        alt="Enfierrados al top"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 3. ATMOSFERA INDUMENTARIA -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/_atmosfera_10"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de Atmosfera Indumentaria"
+                >
+                    <img
+                        class="atmosfera-logo"
+                        src="./img/sponsors/atmosfera.png"
+                        alt="Atmosfera Indumentaria"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 4. JPR MOTOS -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/jpr.motos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de JPR MOTOS"
+                >
+                    <img
+                        src="./img/sponsors/jprmotos.png"
+                        alt="JPR MOTOS"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 5. NOMADE PRODUCCIONES -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/nomade.producciones.ok"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de Nomade Producciones"
+                >
+                    <img
+                        src="./img/sponsors/nomade1.png"
+                        alt="Nomade Producciones"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 6. LA HUELLA CALCOS -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/lahuellacalcos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de La Huella Calcos"
+                >
+                    <img
+                        src="./img/sponsors/lahuellacalcos.png"
+                        alt="La Huella Calcos"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 7. FILMACAR AUTORADIO -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/filmcar.rp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de Filmacar Autoradio"
+                >
+                    <img
+                        src="./img/sponsors/filmcar.png"
+                        alt="Filmacar Autoradio"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 8. RP MECANICA -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/rpmecanica.gral"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de RP Mecanica"
+                >
+                    <img
+                        src="./img/sponsors/rpmecanica.png"
+                        alt="RP Mecanica"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 9. LOWCAPS -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/lowcapsjdm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de Lowcaps"
+                >
+                    <img
+                        src="./img/sponsors/lowcaps.png"
+                        alt="Lowcaps"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 10. HIELOS CACHI -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/hielo.cachi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de Hielos Cachi"
+                >
+                    <img
+                        src="./img/sponsors/hieloscachi.png"
+                        alt="Hielos Cachi"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 11. LSD PLOTT -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/lsd.plott"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de LSD PLOTT"
+                >
+                    <img
+                        src="./img/sponsors/lsdplott.png"
+                        alt="LSD PLOTT"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 12. EMTTI 3D -->
+                <a
+                    class="sponsor-card"
+                    href="https://www.instagram.com/emtti3d/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de EMTTI 3D"
+                >
+                    <img
+                        src="./img/sponsors/emi3d.png"
+                        alt="EMTTI 3D"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">VER INSTAGRAM</span>
+                </a>
+
+                <!-- 13. LMG MECANICA -->
+                <a
+                    class="sponsor-card"
+                    href="https://wa.me/5491150063623"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Contactar a LMG Mecanica por WhatsApp"
+                >
+                    <img
+                        src="./img/sponsors/lmgmecanica.png"
+                        alt="LMG Mecanica"
+                        loading="lazy"
+                    >
+                    <span class="sponsor-contact">CONTACTAR POR WHATSAPP</span>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- CONTACTO -->
+        <section id="contacto" class="section dark-section">
+            <div class="section-title">
+                <p>WOLF SHOWCARS</p>
+                <h2>CONTACTO</h2>
+            </div>
+
+            <div class="contact-content">
+                <p>
+                    Seguinos y enterate de todas las novedades
+                    de WOLF SHOWCARS.
+                </p>
+
+                <p class="instagram">
+                    <a
+                        href="https://www.instagram.com/wolfcars.rp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Visitar Instagram de WOLF SHOWCARS"
+                    >@WOLFCARS.RP</a>
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>© 2027 WOLF SHOWCARS</p>
+        <p>LA MANADA</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script src="js/script.js"></script>
+
+</body>
+</html>
