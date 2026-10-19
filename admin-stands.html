@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#080b08">
+    <title>Administración | WOLF SHOWCARS 2027</title>
+
+    <link rel="icon" href="./img/logo/PNGwolfsHOW%20(1).png">
+
+    <style>
+        :root {
+            --wolf-green: #57ff14;
+            --wolf-black: #080b08;
+            --wolf-card: #111611;
+            --wolf-border: #293329;
+            --wolf-text: #f3f5f2;
+            --wolf-muted: #a5afa3;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--wolf-text);
+            background:
+                radial-gradient(ellipse at top, #193018 0%, transparent 55%),
+                var(--wolf-black);
+        }
+
+        .panel {
+            width: 100%;
+            max-width: 480px;
+            padding: 34px 28px;
+            text-align: center;
+            background: rgba(17, 22, 17, 0.97);
+            border: 1px solid var(--wolf-border);
+            border-radius: 18px;
+            box-shadow: 0 0 40px rgba(87, 255, 20, 0.07);
+        }
+
+        .logo {
+            display: block;
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
+            margin: 0 auto 18px;
+        }
+
+        .brand {
+            margin: 0;
+            font-size: 27px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .brand span {
+            color: var(--wolf-green);
+        }
+
+        .subtitle {
+            margin: 10px 0 28px;
+            color: var(--wolf-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            margin: 0 0 20px;
+            color: var(--wolf-green);
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+            font-size: 13px;
+            color: #dce4d9;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 16px;
+            color: white;
+            background: #090c09;
+            border: 1px solid #394339;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--wolf-green);
+            box-shadow: 0 0 0 2px rgba(87, 255, 20, 0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 16px;
+            color: #071005;
+            background: var(--wolf-green);
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #75ff42;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.55;
+            cursor: wait;
+            transform: none;
+        }
+
+        .secondary {
+            margin-top: 12px;
+            color: var(--wolf-text);
+            background: #242b24;
+            border: 1px solid #394339;
+        }
+
+        .secondary:hover {
+            background: #303a30;
+        }
+
+        .status {
+            display: none;
+            margin-top: 18px;
+            padding: 13px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .status.info {
+            display: block;
+            color: #dcebd8;
+            background: #172217;
+            border: 1px solid #304730;
+        }
+
+        .status.success {
+            display: block;
+            color: #aaff91;
+            background: #11210e;
+            border: 1px solid #315d26;
+        }
+
+        .status.error {
+            display: block;
+            color: #ffb9b9;
+            background: #291313;
+            border: 1px solid #713030;
+        }
+
+        .status.warning {
+            display: block;
+            color: #ffe3a1;
+            background: #29220f;
+            border: 1px solid #665021;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .footer {
+            margin-top: 26px;
+            color: #738071;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .footer strong {
+            color: var(--wolf-green);
+        }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 14px;
+            }
+
+            .panel {
+                padding: 28px 20px;
+            }
+
+            .brand {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="panel">
+        <img
+            class="logo"
+            src="./img/logo/PNGwolfsHOW%20(1).png"
+            alt="Logo WOLF SHOWCARS"
+        >
+
+        <h1 class="brand">WOLF <span>SHOWCARS</span></h1>
+        <p class="subtitle">
+            Panel privado de administración<br>
+            Edición IV · 27 y 28 de febrero de 2027
+        </p>
+
+        <section id="loginSection">
+            <h2 class="section-title">ACCESO ADMINISTRATIVO</h2>
+
+            <form id="loginForm">
+                <label for="email">Correo autorizado</label>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value="sivomago@gmail.com"
+                    autocomplete="email"
+                    maxlength="254"
+                    required
+                >
+
+                <button id="loginButton" type="submit">
+                    ENVIAR ENLACE DE ACCESO
+                </button>
+            </form>
+
+            <div id="loginStatus" class="status" role="status" aria-live="polite"></div>
+        </section>
+
+        <section id="adminSection" class="hidden">
+            <h2 class="section-title">ESTADO DE ACCESO</h2>
+            <p id="adminDescription">
+                Verificando permisos de administración...
+            </p>
+            <div id="adminStatus" class="status" role="status" aria-live="polite"></div>
+
+            <button id="logoutButton" class="secondary" type="button">
+                CERRAR SESIÓN
+            </button>
+        </section>
+
+        <p class="footer">
+            <strong>MANADA WOLF</strong><br>
+            Acceso restringido a personal autorizado.<br>
+            No compartas el enlace de acceso recibido por correo.
+        </p>
+    </main>
+
+    <script type="module">
+        import { createClient } from
+            'https://esm.sh/@supabase/supabase-js@2.53.0';
+
+        const SUPABASE_URL =
+            'https://hbqcxubnlqcojbvwibmv.supabase.co';
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            'sb_publishable_Lfv2Uf5xLPVQsfy75FTAUQ_x-NWUhB8';
+
+        const supabase = createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY,
+            {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true
+                }
+            }
+        );
+
+        const loginSection = document.getElementById('loginSection');
+        const adminSection = document.getElementById('adminSection');
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const loginStatus = document.getElementById('loginStatus');
+        const adminStatus = document.getElementById('adminStatus');
+        const adminDescription = document.getElementById('adminDescription');
+        const emailInput = document.getElementById('email');
+        const logoutButton = document.getElementById('logoutButton');
+
+        let checkingAccess = false;
+
+        function showStatus(element, message, type = 'info') {
+            element.textContent = message;
+            element.className = 'status ' + type;
+        }
+
+        function clearStatus(element) {
+            element.textContent = '';
+            element.className = 'status';
+        }
+
+        function showLogin() {
+            loginSection.classList.remove('hidden');
+            adminSection.classList.add('hidden');
+        }
+
+        function showAdmin() {
+            loginSection.classList.add('hidden');
+            adminSection.classList.remove('hidden');
+        }
+
+        async function checkAdminAccess(session) {
+            if (checkingAccess) return;
+            checkingAccess = true;
+
+            showAdmin();
+            adminDescription.textContent =
+                'Verificando tu identidad y tus permisos...';
+            clearStatus(adminStatus);
+
+            try {
+                if (!session?.access_token) {
+                    showLogin();
+                    showStatus(
+                        loginStatus,
+                        'Iniciá sesión con el enlace enviado a tu correo.',
+                        'info'
+                    );
+                    return;
+                }
+
+                const { data, error } = await supabase.functions.invoke(
+                    'admin-access-check',
+                    {
+                        method: 'POST'
+                    }
+                );
+
+                if (error) {
+                    throw error;
+                }
+
+                if (data?.authorized === true) {
+                    adminDescription.textContent =
+                        'Sesión iniciada y permisos administrativos verificados.';
+
+                    showStatus(
+                        adminStatus,
+                        'Acceso autorizado. La conexión con el sistema está verificada. El panel de gestión de solicitudes, pagos y certificados se incorporará en la siguiente etapa.',
+                        'success'
+                    );
+                } else {
+                    adminDescription.textContent =
+                        'La cuenta inició sesión, pero no tiene permisos de administración.';
+
+                    showStatus(
+                        adminStatus,
+                        'ACCESO NO AUTORIZADO. Esta cuenta todavía no figura habilitada en la lista de administradores. No se habilitó ninguna función de gestión.',
+                        'warning'
+                    );
+                }
+            } catch (error) {
+                console.error('Error verificando acceso:', error);
+
+                adminDescription.textContent =
+                    'No se pudieron verificar los permisos.';
+
+                showStatus(
+                    adminStatus,
+                    'No se pudo completar la verificación. Revisá la configuración de Supabase y que la función admin-access-check esté activa. No se habilitó ninguna función de gestión.',
+                    'error'
+                );
+            } finally {
+                checkingAccess = false;
+            }
+        }
+
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = emailInput.value.trim().toLowerCase();
+
+            if (!email) {
+                showStatus(
+                    loginStatus,
+                    'Ingresá el correo autorizado.',
+                    'error'
+                );
+                return;
+            }
+
+            loginButton.disabled = true;
+            loginButton.textContent = 'ENVIANDO...';
+            clearStatus(loginStatus);
+
+            try {
+                const redirectTo =
+                    window.location.origin + window.location.pathname;
+
+                const { error } = await supabase.auth.signInWithOtp({
+                    email,
+                    options: {
+                        emailRedirectTo: redirectTo,
+                        shouldCreateUser: false
+                    }
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+                showStatus(
+                    loginStatus,
+                    'Si el correo corresponde a una cuenta habilitada, recibirás un enlace de acceso. Revisá también la carpeta de correo no deseado.',
+                    'success'
+                );
+            } catch (error) {
+                console.error('Error solicitando acceso:', error);
+
+                showStatus(
+                    loginStatus,
+                    'No se pudo solicitar el enlace. Verificá la configuración de Auth, las URL permitidas y que la cuenta exista. Si el problema continúa, revisá los registros de Supabase.',
+                    'error'
+                );
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = 'ENVIAR ENLACE DE ACCESO';
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            logoutButton.disabled = true;
+
+            try {
+                const { error } = await supabase.auth.signOut();
+
+                if (error) throw error;
+
+                showLogin();
+                showStatus(
+                    loginStatus,
+                    'Sesión cerrada correctamente.',
+                    'success'
+                );
+            } catch (error) {
+                console.error('Error cerrando sesión:', error);
+
+                showStatus(
+                    adminStatus,
+                    'No se pudo cerrar la sesión. Intentá nuevamente.',
+                    'error'
+                );
+            } finally {
+                logoutButton.disabled = false;
+            }
+        });
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') {
+                showLogin();
+                return;
+            }
+
+            if (
+                event === 'SIGNED_IN' ||
+                event === 'INITIAL_SESSION' ||
+                event === 'TOKEN_REFRESHED'
+            ) {
+                if (session) {
+                    checkAdminAccess(session);
+                } else {
+                    showLogin();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
