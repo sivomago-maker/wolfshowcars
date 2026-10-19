@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -790,6 +789,19 @@
 
     </main>
 
+    <!-- CONTADOR DE VISITAS WOLF SHOWCARS -->
+    <section id="wolf-counter" aria-label="Contador de visitas de WOLF SHOWCARS" style="background:#080b08; color:#fff; padding:48px 20px; text-align:center; border-top:1px solid #57ff14;">
+        <div style="max-width:760px; margin:0 auto; border:1px solid rgba(87,255,20,.65); border-radius:18px; padding:30px 20px; box-shadow:0 0 24px rgba(87,255,20,.08);">
+            <p style="margin:0 0 10px; color:#57ff14; font-size:12px; font-weight:800; letter-spacing:3px;">WOLF SHOWCARS · EDICIÓN IV</p>
+            <h2 style="margin:0 0 12px; color:#fff; font-size:clamp(22px,4vw,34px); font-weight:900;">LA MANADA <span style="color:#57ff14;">NO PARA DE CRECER</span></h2>
+            <p style="margin:0 0 18px; color:#c7cfc4; font-size:13px; letter-spacing:2px;">VISITAS TOTALES A LA WEB</p>
+            <div id="wolf-visit-count" style="display:flex; justify-content:center; min-height:76px; align-items:center; color:#57ff14; font-size:32px; font-weight:900;">
+                <span style="font-size:14px; color:#aab3a7; font-weight:500; letter-spacing:1px;">CARGANDO CONTADOR…</span>
+            </div>
+            <p style="margin:18px 0 0; color:#aab3a7; font-size:12px;">Cada visita suma a la Manada 🐺</p>
+        </div>
+    </section>
+
     <!-- PIE DE PÁGINA -->
     <footer>
         <p>© 2027 WOLF SHOWCARS</p>
@@ -802,6 +814,34 @@
     
 <script data-goatcounter="https://wolfshowcars.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+
+    <!-- Muestra el total del sitio cuando GoatCounter terminó de cargar -->
+    <script>
+        (function () {
+            var attempts = 0;
+            var timer = setInterval(function () {
+                attempts++;
+                if (window.goatcounter && window.goatcounter.visit_count) {
+                    clearInterval(timer);
+                    window.goatcounter.visit_count({
+                        append: '#wolf-visit-count',
+                        path: 'TOTAL',
+                        no_branding: true,
+                        style: `
+                            div { background: transparent; border: 0; color: #57ff14; width: auto; height: auto; margin: 0 auto; }
+                            #gcvc-for { color: #c7cfc4; font-size: 12px; }
+                            #gcvc-views { color: #57ff14; font-size: 34px; font-weight: 900; }
+                            #gcvc-by { display: none; }
+                        `
+                    });
+                } else if (attempts > 100) {
+                    clearInterval(timer);
+                    var target = document.getElementById('wolf-visit-count');
+                    if (target) target.innerHTML = '<span style="font-size:13px;color:#aab3a7;">El contador no pudo cargarse. Probá nuevamente en unos minutos.</span>';
+                }
+            }, 100);
+        })();
+    </script>
 
 </body>
 </html>
