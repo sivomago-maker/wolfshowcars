@@ -1,31 +1,576 @@
+
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Central de Operaciones | WOLF SHOWCARS 2027</title>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Central de Operaciones | WOLF SHOWCARS 2027</title>
+
 <style>
-:root{color-scheme:dark;--bg:#08120c;--panel:#14251a;--line:#385c41;--green:#a5f35c;--muted:#b7cbb9}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 90% 380px at 50% -100px,#26502e,transparent),linear-gradient(145deg,#09150e,#060c09);font:15px system-ui,Segoe UI,Arial;color:#eff9ee}main{width:min(100%,1050px);margin:auto;padding:22px 17px 80px}h1{font-size:clamp(30px,5vw,49px);letter-spacing:-.045em;margin:10px 0 4px}h1 span,.eyebrow{color:var(--green)}h2{font-size:21px;margin:0 0 9px}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.13em}.muted{color:var(--muted);line-height:1.55}.panel{background:linear-gradient(150deg,#172b1e,#0f1e15);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,28px);margin-top:20px;box-shadow:0 16px 36px #0003}label{display:block;margin:15px 0 7px;font-weight:700}input{width:100%;padding:14px;border-radius:11px;background:#08160c;color:white;border:1px solid #618266;font:inherit}button,.action{border:1px solid #baff86;border-radius:11px;padding:13px 16px;font:inherit;font-weight:850;background:var(--green);color:#10200c;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}button.alt,.action.alt{background:#26412d;color:#edffea;border-color:#64866a}button:disabled{opacity:.5}.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.top a{color:#caff9d;text-decoration:none;font-size:13px}.who{background:#0d2114;border:1px solid #426d49;border-radius:14px;padding:14px 16px;margin-top:15px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.module{display:flex;flex-direction:column;gap:8px;min-height:180px;padding:18px;border:1px solid #395e43;background:#102017;border-radius:16px;color:#effaef;text-decoration:none;transition:transform .15s,border-color .15s}.module:hover{transform:translateY(-2px);border-color:var(--green)}.module .ico{font-size:29px}.module strong{font-size:16px}.module small{color:var(--muted);line-height:1.5;flex:1}.module em{font-style:normal;color:var(--green);font-size:12px;font-weight:900}.module[hidden],[hidden]{display:none!important}.section{font-size:12px;font-weight:900;letter-spacing:.13em;color:var(--green);margin:25px 0 12px}.note{font-size:13px;color:#b8cbb8;line-height:1.6}.error{color:#ffb5b5;min-height:22px}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #baff86;outline-offset:3px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.grid{grid-template-columns:1fr}.module{min-height:125px}main{padding:15px 13px 60px}}
-</style></head><body><main>
-<div class="top"><span class="eyebrow">🐺 WOLF SHOWCARS 2027 · ÁREA INTERNA</span><a href="./index.html">⌂ VOLVER A LA WEB</a></div>
-<h1>CENTRAL <span>STAFF</span></h1><p class="muted">Un único acceso para el personal del evento. Cada integrante ve solamente sus herramientas autorizadas.</p>
-<section id="login" class="panel"><h2>Iniciar sesión</h2><p class="muted">Ingresá tu número de personal y PIN. Si ya iniciaste sesión, no hace falta hacerlo nuevamente.</p><form id="form"><label for="number">Número de STAFF</label><input id="number" type="number" min="1" max="999" placeholder="Ej.: 07" autocomplete="username" required><label for="pin">PIN de 6 números</label><input id="pin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="current-password" required><button id="enter" style="margin-top:18px;width:100%">INGRESAR A CENTRAL STAFF</button></form></section>
-<section id="logged" hidden><div class="who top"><div><strong id="welcome"></strong><p class="muted" id="role" style="margin:5px 0 0"></p></div><button class="alt" id="logout">CERRAR SESIÓN</button></div>
-<div class="section">OPERACIONES DEL EVENTO</div><div class="grid">
-<a class="module" href="./control-qr-general.html" data-roles="supervisor qr puerta stands"><span class="ico">📷</span><strong>CONTROL QR GENERAL</strong><small>Escanear y buscar autos, motos y stands desde una sola pantalla.</small><em>ABRIR →</em></a>
-<a class="module" href="./caja-ingresos-wolf.html" data-roles="supervisor puerta"><span class="ico">💳</span><strong>CAJA DE AUTOS Y PÚBLICO</strong><small>Cobros de autos y peatones en puerta.</small><em>ABRIR →</em></a>
-<a class="module" href="./caja-motos.html" data-roles="supervisor puerta"><span class="ico">🏍️</span><strong>CAJA DE MOTOS</strong><small>Consultar y registrar cobros de motos en puerta.</small><em>ABRIR →</em></a>
-<a class="module" href="./admin-ingresos.html" data-roles="supervisor stands"><span class="ico">🏪</span><strong>INGRESO DE STANDS</strong><small>Control de ingreso de emprendedores. Por ahora utiliza su autorización independiente.</small><em>ABRIR →</em></a>
-<a class="module" href="./control-pulseras.html" data-roles="supervisor pulseras puerta"><span class="ico">🎟️</span><strong>PULSERAS</strong><small>Entrega y seguimiento de pulseras por jornada.</small><em>ABRIR →</em></a>
-</div><div class="section" id="admin-title">ADMINISTRACIÓN Y SUPERVISIÓN</div><div class="grid" id="admin-grid">
-<a class="module" href="./admin-autos.html" data-roles="supervisor"><span class="ico">🚘</span><strong>ACREDITACIONES DE AUTOS</strong><small>Inscripciones, comprobantes y confirmación de preventas.</small><em>GESTIONAR →</em></a>
-<a class="module" href="./admin-motos.html" data-roles="supervisor"><span class="ico">🏍️</span><strong>ACREDITACIONES DE MOTOS</strong><small>Inscripciones, comprobantes y confirmación de preventas.</small><em>GESTIONAR →</em></a>
-<a class="module" href="./admin-stands.html" data-roles="supervisor"><span class="ico">🏕️</span><strong>ADMINISTRACIÓN DE STANDS</strong><small>Administración de postulaciones; requiere su propio acceso autorizado.</small><em>GESTIONAR →</em></a>
-<a class="module" href="./gestion-staff.html" data-roles="supervisor"><span class="ico">👥</span><strong>PERSONAL STAFF</strong><small>Altas, roles y PIN del equipo.</small><em>GESTIONAR →</em></a>
-<a class="module" href="./central-wolf.html" data-roles="supervisor"><span class="ico">📊</span><strong>REPORTES Y ESTADÍSTICAS</strong><small>Indicadores, actividad y exportación de pulseras por jornada.</small><em>VER REPORTES →</em></a>
-</div><p class="note">Los lectores antiguos quedan como respaldo, pero no aparecen en este menú. El CONTROL QR GENERAL está en modo consulta: todavía no registra ingresos ni cobros.</p></section>
-<p class="error" id="msg" role="status" aria-live="polite"></p></main>
+:root{
+  color-scheme:dark;
+  --bg:#08120c;
+  --panel:#14251a;
+  --line:#385c41;
+  --green:#a5f35c;
+  --muted:#b7cbb9
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 90% 380px at 50% -100px,#26502e,transparent),
+    linear-gradient(145deg,#09150e,#060c09);
+  font:15px system-ui,Segoe UI,Arial;
+  color:#eff9ee
+}
+main{
+  width:min(100%,1050px);
+  margin:auto;
+  padding:22px 17px 80px
+}
+h1{
+  font-size:clamp(30px,5vw,49px);
+  letter-spacing:-.045em;
+  margin:10px 0 4px
+}
+h1 span,.eyebrow{color:var(--green)}
+h2{font-size:21px;margin:0 0 9px}
+.eyebrow{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.13em
+}
+.muted{color:var(--muted);line-height:1.55}
+.panel{
+  background:linear-gradient(150deg,#172b1e,#0f1e15);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:clamp(18px,3vw,28px);
+  margin-top:20px;
+  box-shadow:0 16px 36px #0003
+}
+label{
+  display:block;
+  margin:15px 0 7px;
+  font-weight:700
+}
+input{
+  width:100%;
+  padding:14px;
+  border-radius:11px;
+  background:#08160c;
+  color:white;
+  border:1px solid #618266;
+  font:inherit
+}
+button,.action{
+  border:1px solid #baff86;
+  border-radius:11px;
+  padding:13px 16px;
+  font:inherit;
+  font-weight:850;
+  background:var(--green);
+  color:#10200c;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center
+}
+button.alt,.action.alt{
+  background:#26412d;
+  color:#edffea;
+  border-color:#64866a
+}
+button:disabled{opacity:.5}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap
+}
+.top a{
+  color:#caff9d;
+  text-decoration:none;
+  font-size:13px
+}
+.who{
+  background:#0d2114;
+  border:1px solid #426d49;
+  border-radius:14px;
+  padding:14px 16px;
+  margin-top:15px
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:13px
+}
+.module{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-height:180px;
+  padding:18px;
+  border:1px solid #395e43;
+  background:#102017;
+  border-radius:16px;
+  color:#effaef;
+  text-decoration:none;
+  transition:transform .15s,border-color .15s
+}
+.module:hover{
+  transform:translateY(-2px);
+  border-color:var(--green)
+}
+.module .ico{font-size:29px}
+.module strong{font-size:16px}
+.module small{
+  color:var(--muted);
+  line-height:1.5;
+  flex:1
+}
+.module em{
+  font-style:normal;
+  color:var(--green);
+  font-size:12px;
+  font-weight:900
+}
+.module[hidden],[hidden]{display:none!important}
+.section{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.13em;
+  color:var(--green);
+  margin:25px 0 12px
+}
+.note{
+  font-size:13px;
+  color:#b8cbb8;
+  line-height:1.6
+}
+.error{
+  color:#ffb5b5;
+  min-height:22px
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible{
+  outline:3px solid #baff86;
+  outline-offset:3px
+}
+@media(max-width:760px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:480px){
+  .grid{grid-template-columns:1fr}
+  .module{min-height:125px}
+  main{padding:15px 13px 60px}
+}
+</style>
+</head>
+
+<body>
+<main>
+
+<div class="top">
+  <span class="eyebrow">
+    🐺 WOLF SHOWCARS 2027 · ÁREA INTERNA
+  </span>
+  <a href="./index.html">⌂ VOLVER A LA WEB</a>
+</div>
+
+<h1>CENTRAL <span>STAFF</span></h1>
+
+<p class="muted">
+  Un único acceso para el personal del evento.
+  Cada integrante ve las herramientas correspondientes a su perfil.
+</p>
+
+<section id="login" class="panel">
+  <h2>Iniciar sesión</h2>
+  <p class="muted">
+    Ingresá tu número de personal y PIN.
+    Si ya iniciaste sesión, no hace falta hacerlo nuevamente.
+  </p>
+
+  <form id="form">
+    <label for="number">Número de STAFF</label>
+    <input
+      id="number"
+      type="number"
+      min="1"
+      max="999"
+      placeholder="Ej.: 07"
+      autocomplete="username"
+      required
+    >
+
+    <label for="pin">PIN de 6 números</label>
+    <input
+      id="pin"
+      type="password"
+      inputmode="numeric"
+      pattern="[0-9]{6}"
+      maxlength="6"
+      autocomplete="current-password"
+      required
+    >
+
+    <button id="enter" style="margin-top:18px;width:100%">
+      INGRESAR A CENTRAL STAFF
+    </button>
+  </form>
+</section>
+
+<section id="logged" hidden>
+
+  <div class="who top">
+    <div>
+      <strong id="welcome"></strong>
+      <p
+        class="muted"
+        id="role"
+        style="margin:5px 0 0"
+      ></p>
+    </div>
+
+    <button class="alt" id="logout">
+      CERRAR SESIÓN
+    </button>
+  </div>
+
+  <div class="section">
+    OPERACIONES DEL EVENTO
+  </div>
+
+  <div class="grid">
+
+    <a
+      class="module"
+      href="./control-qr-general.html"
+      data-roles="staff supervisor qr puerta stands"
+    >
+      <span class="ico">📷</span>
+      <strong>CONTROL QR GENERAL</strong>
+      <small>
+        Escanear y buscar autos, motos y stands
+        desde una sola pantalla.
+      </small>
+      <em>ABRIR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./caja-ingresos-wolf.html"
+      data-roles="staff supervisor puerta"
+    >
+      <span class="ico">💳</span>
+      <strong>CAJA DE AUTOS Y PÚBLICO</strong>
+      <small>
+        Cobros de autos y peatones en puerta.
+      </small>
+      <em>ABRIR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./caja-motos.html"
+      data-roles="staff supervisor puerta"
+    >
+      <span class="ico">🏍️</span>
+      <strong>CAJA DE MOTOS</strong>
+      <small>
+        Consultar y registrar cobros de motos en puerta.
+      </small>
+      <em>ABRIR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./admin-ingresos.html"
+      data-roles="staff supervisor stands"
+    >
+      <span class="ico">🏪</span>
+      <strong>INGRESO DE STANDS</strong>
+      <small>
+        Verificar certificados y registrar
+        ingresos de emprendedores.
+      </small>
+      <em>ABRIR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./control-pulseras.html"
+      data-roles="staff supervisor pulseras puerta"
+    >
+      <span class="ico">🎟️</span>
+      <strong>PULSERAS</strong>
+      <small>
+        Entrega y registro de pulseras por jornada.
+      </small>
+      <em>ABRIR →</em>
+    </a>
+
+  </div>
+
+  <div
+    class="section"
+    id="admin-title"
+  >
+    ADMINISTRACIÓN Y SUPERVISIÓN
+  </div>
+
+  <div class="grid" id="admin-grid">
+
+    <a
+      class="module"
+      href="./admin-autos.html"
+      data-roles="supervisor"
+    >
+      <span class="ico">🚘</span>
+      <strong>ACREDITACIONES DE AUTOS</strong>
+      <small>
+        Inscripciones, comprobantes
+        y confirmación de preventas.
+      </small>
+      <em>GESTIONAR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./admin-motos.html"
+      data-roles="supervisor"
+    >
+      <span class="ico">🏍️</span>
+      <strong>ACREDITACIONES DE MOTOS</strong>
+      <small>
+        Inscripciones, comprobantes
+        y confirmación de preventas.
+      </small>
+      <em>GESTIONAR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./admin-stands.html"
+      data-roles="supervisor"
+    >
+      <span class="ico">🏕️</span>
+      <strong>ADMINISTRACIÓN DE STANDS</strong>
+      <small>
+        Administración de postulaciones;
+        requiere su propio acceso autorizado.
+      </small>
+      <em>GESTIONAR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./gestion-staff.html"
+      data-roles="supervisor"
+    >
+      <span class="ico">👥</span>
+      <strong>PERSONAL STAFF</strong>
+      <small>
+        Altas, perfiles y PIN del equipo.
+      </small>
+      <em>GESTIONAR →</em>
+    </a>
+
+    <a
+      class="module"
+      href="./central-wolf.html"
+      data-roles="supervisor"
+    >
+      <span class="ico">📊</span>
+      <strong>REPORTES Y ESTADÍSTICAS</strong>
+      <small>
+        Indicadores, actividad
+        y exportación de pulseras por jornada.
+      </small>
+      <em>VER REPORTES →</em>
+    </a>
+
+  </div>
+
+  <p class="note">
+    Los lectores antiguos quedan como respaldo,
+    pero no aparecen en este menú.
+    El CONTROL QR GENERAL está en modo consulta:
+    todavía no registra ingresos ni cobros.
+  </p>
+
+</section>
+
+<p
+  class="error"
+  id="msg"
+  role="status"
+  aria-live="polite"
+></p>
+
+</main>
+
 <script>
-const BASE='https://hbqcxubnlqcojbvwibmv.supabase.co/functions/v1/wolf-staff-login',KEY='sb_publishable_Lfv2Uf5xLPVQsfy75FTAUQ_x-NWUhB8', $=id=>document.getElementById(id);let token=sessionStorage.getItem('wolf_staff_token')||'';const labels={qr:'Control QR',puerta:'Puerta y caja',pulseras:'Pulseras',stands:'Stands',supervisor:'Supervisor'};
-async function api(body){const r=await fetch(BASE,{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok||d.error)throw Error(d.error||'Error de conexión');return d}
-function show(staff){$('login').hidden=!!staff;$('logged').hidden=!staff;if(staff){$('welcome').textContent='STAFF '+String(staff.staff_number).padStart(2,'0')+' · '+staff.full_name;$('role').textContent='Función: '+(labels[staff.role]||staff.role);document.querySelectorAll('[data-roles]').forEach(a=>a.hidden=!a.dataset.roles.split(' ').includes(staff.role));$('admin-title').hidden=staff.role!=='supervisor';$('admin-grid').hidden=staff.role!=='supervisor'}}
-$('form').addEventListener('submit',async e=>{e.preventDefault();$('enter').disabled=true;$('msg').textContent='';try{const r=await api({action:'login',staff_number:Number($('number').value),pin:$('pin').value});token=r.token;sessionStorage.setItem('wolf_staff_token',token);$('pin').value='';show(r.staff)}catch(e){$('msg').textContent=e.message}finally{$('enter').disabled=false}});
-$('logout').onclick=async()=>{try{if(token)await api({action:'logout',token})}catch{}token='';sessionStorage.removeItem('wolf_staff_token');sessionStorage.removeItem('wolf_dashboard_token');show(null);$('msg').textContent='Sesión cerrada.'};
-(async()=>{if(!token)return;try{const r=await api({action:'me',token});show(r.staff)}catch{token='';sessionStorage.removeItem('wolf_staff_token');show(null)}})();
-</script></body></html>
+const BASE =
+  'https://hbqcxubnlqcojbvwibmv.supabase.co/functions/v1/wolf-staff-login';
+
+const KEY =
+  'sb_publishable_Lfv2Uf5xLPVQsfy75FTAUQ_x-NWUhB8';
+
+const $ = id => document.getElementById(id);
+
+let token =
+  sessionStorage.getItem('wolf_staff_token') || '';
+
+const labels = {
+  staff: 'Personal STAFF',
+  supervisor: 'Supervisor',
+  qr: 'Control QR',
+  puerta: 'Puerta y caja',
+  pulseras: 'Pulseras',
+  stands: 'Stands'
+};
+
+async function api(body) {
+  const r = await fetch(BASE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: KEY
+    },
+    body: JSON.stringify(body)
+  });
+
+  const d = await r.json().catch(() => ({}));
+
+  if (!r.ok || d.error) {
+    throw Error(d.error || 'Error de conexión');
+  }
+
+  return d;
+}
+
+function show(staff) {
+  $('login').hidden = !!staff;
+  $('logged').hidden = !staff;
+
+  if (!staff) {
+    $('welcome').textContent = '';
+    $('role').textContent = '';
+    document.querySelectorAll('[data-roles]').forEach(
+      a => a.hidden = true
+    );
+    return;
+  }
+
+  $('welcome').textContent =
+    'STAFF ' +
+    String(staff.staff_number).padStart(2, '0') +
+    ' · ' +
+    staff.full_name;
+
+  $('role').textContent =
+    'Función: ' +
+    (labels[staff.role] || staff.role);
+
+  document.querySelectorAll('[data-roles]').forEach(a => {
+    const roles = a.dataset.roles.split(' ');
+    a.hidden = !roles.includes(staff.role);
+  });
+
+  const isSupervisor = staff.role === 'supervisor';
+
+  $('admin-title').hidden = !isSupervisor;
+  $('admin-grid').hidden = !isSupervisor;
+}
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  $('enter').disabled = true;
+  $('msg').textContent = '';
+
+  try {
+    const r = await api({
+      action: 'login',
+      staff_number: Number($('number').value),
+      pin: $('pin').value
+    });
+
+    token = r.token;
+
+    sessionStorage.setItem(
+      'wolf_staff_token',
+      token
+    );
+
+    $('pin').value = '';
+
+    show(r.staff);
+
+  } catch (e) {
+    $('msg').textContent = e.message;
+
+  } finally {
+    $('enter').disabled = false;
+  }
+});
+
+$('logout').onclick = async () => {
+  try {
+    if (token) {
+      await api({
+        action: 'logout',
+        token
+      });
+    }
+  } catch {}
+
+  token = '';
+
+  sessionStorage.removeItem(
+    'wolf_staff_token'
+  );
+
+  sessionStorage.removeItem(
+    'wolf_dashboard_token'
+  );
+
+  show(null);
+
+  $('msg').textContent =
+    'Sesión cerrada.';
+};
+
+(async () => {
+  if (!token) return;
+
+  try {
+    const r = await api({
+      action: 'me',
+      token
+    });
+
+    show(r.staff);
+
+  } catch {
+    token = '';
+
+    sessionStorage.removeItem(
+      'wolf_staff_token'
+    );
+
+    show(null);
+  }
+})();
+</script>
+
+</body>
+</html>
