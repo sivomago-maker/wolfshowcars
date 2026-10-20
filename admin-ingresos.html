@@ -11,7 +11,31 @@ import{createClient}from'https://esm.sh/@supabase/supabase-js@2.53.0';
 import{Html5Qrcode}from'https://esm.sh/html5-qrcode@2.3.8';
 const db=createClient('https://hbqcxubnlqcojbvwibmv.supabase.co','sb_publishable_Lfv2Uf5xLPVQsfy75FTAUQ_x-NWUhB8');const $=id=>document.getElementById(id);let scanner=null,scanning=false,busy=false,lastValue='',lastAt=0,showingResult=false;
 function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Argentina/Buenos_Aires',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}function isEventDay(){return ['2027-02-27','2027-02-28'].includes(today())}
-async function api(body){const {data,error}=await db.functions.invoke('stand-checkin-api',{body});if(error){if(data?.error)throw Error(data.error);throw error}if(data?.error)throw Error(data.error);return data}
+// WOLF_STAFF_STANDS_V2: usa la sesión STAFF sin eliminar el acceso antiguo por correo.
+const STAFF_URL='https://hbqcxubnlqcojbvwibmv.supabase.co/functions/v1/wolf-staff-login';
+const CHECKIN_URL='https://hbqcxubnlqcojbvwibmv.supabase.co/functions/v1/stand-checkin-api';
+const STAFF_KEY='sb_publishable_Lfv2Uf5xLPVQsfy75FTAUQ_x-NWUhB8';
+let staffToken=sessionStorage.getItem('wolf_staff_token')||'';
+let staffMode=false;
+async function staffMe(){
+ const r=await fetch(STAFF_URL,{method:'POST',headers:{'Content-Type':'application/json',apikey:STAFF_KEY},body:JSON.stringify({action:'me',token:staffToken})});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok||d.error||!d.staff)throw Error(d.error||'Sesión STAFF no válida');
+ if(!['stands','supervisor'].includes(d.staff.role))throw Error('Tu función STAFF no permite controlar ingresos de stands.');
+ return d.staff;
+}
+async function api(body){
+ if(staffMode){
+  const r=await fetch(CHECKIN_URL,{method:'POST',headers:{'Content-Type':'application/json',apikey:STAFF_KEY,'Authorization':'Bearer '+STAFF_KEY,'x-wolf-staff-token':staffToken},body:JSON.stringify(body)});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||d.error)throw Error(d.error||'No se pudo consultar el control de stands');
+  return d;
+ }
+ const {data,error}=await db.functions.invoke('stand-checkin-api',{body});
+ if(error){if(data?.error)throw Error(data.error);throw error}
+ if(data?.error)throw Error(data.error);
+ return data;
+}
 function display(text,kind=''){const el=$('result');el.className='status '+kind;el.textContent=text}
 function showScan(title,business,details,kind='ok'){showingResult=true;const o=$('scanOverlay');o.className=kind;$('scanIcon').textContent=kind==='ok'?'✓':kind==='warn'?'!':'✕';$('scanTitle').textContent=title;$('scanBusiness').textContent=business||'';$('scanDetails').textContent=details||'';o.hidden=false;$('scanClose').focus()}function dismissScan(){showingResult=false;$('scanOverlay').hidden=true;lastValue='';lastAt=0}$('scanClose').onclick=dismissScan;
 function parseQR(value){const url=new URL(value.trim());if(url.origin!=='https://sivomago-maker.github.io'||!url.pathname.endsWith('/wolfshowcars/seguimiento-stand.html'))throw Error('El QR no corresponde a WOLF SHOWCARS.');const code=url.searchParams.get('verify'),token=url.searchParams.get('token');if(!code||!token)throw Error('El QR no contiene un certificado válido.');return{code,token}}
@@ -34,8 +58,40 @@ $('start').onclick=async()=>{
 };
 async function stop(){dismissScan();scanning=false;if(scanner){try{await scanner.stop()}catch{}try{await scanner.clear()}catch{}scanner=null}$('qrReader').hidden=true;$('stop').hidden=true;$('start').hidden=false}
 $('stop').onclick=stop;
-$('manual').onclick=()=>process($('qrText').value);$('reload').onclick=loadSummary;$('logout').onclick=async()=>{stop();await db.auth.signOut()};
+$('manual').onclick=()=>process($('qrText').value);$('reload').onclick=loadSummary;
+$('logout').onclick=async()=>{
+ await stop();
+ if(staffMode){
+  try{await fetch(STAFF_URL,{method:'POST',headers:{'Content-Type':'application/json',apikey:STAFF_KEY},body:JSON.stringify({action:'logout',token:staffToken})})}catch{}
+  sessionStorage.removeItem('wolf_staff_token');
+  staffToken='';staffMode=false;
+  location.href='./acceso-staff.html';
+ }else{await db.auth.signOut()}
+};
 $('loginForm').onsubmit=async e=>{e.preventDefault();try{const{error}=await db.auth.signInWithOtp({email:$('email').value.trim(),options:{emailRedirectTo:location.origin+location.pathname,shouldCreateUser:false}});if(error)throw error;$('loginMsg').textContent='Revisá tu correo para ingresar.'}catch(e){$('loginMsg').textContent=e.message||'No se pudo enviar el enlace'}};
 async function check(session){if(!session)return;try{await api({action:'summary'});$('login').hidden=true;$('admin').hidden=false;await loadSummary()}catch(e){$('admin').hidden=true;$('login').hidden=false;$('loginMsg').textContent='Acceso no autorizado o sesión vencida.'}}
-db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){stop();$('admin').hidden=true;$('login').hidden=false}else if(session&&['SIGNED_IN','INITIAL_SESSION'].includes(event))setTimeout(()=>check(session),0)});
+db.auth.onAuthStateChange((event,session)=>{
+ if(staffMode)return;
+ if(event==='SIGNED_OUT'){stop();$('admin').hidden=true;$('login').hidden=false}
+ else if(session&&['SIGNED_IN','INITIAL_SESSION'].includes(event))setTimeout(()=>check(session),0)
+});
+(async()=>{
+ if(!staffToken)return;
+ try{
+  const staff=await staffMe();
+  staffMode=true;
+  await api({action:'summary'});
+  $('login').hidden=true;
+  $('admin').hidden=false;
+  const badge=document.createElement('p');badge.className='muted';
+  badge.textContent='Sesión STAFF '+String(staff.staff_number).padStart(2,'0')+' · '+staff.full_name+' · '+(staff.role==='supervisor'?'Supervisor':'Stands');
+  $('admin').prepend(badge);
+  await loadSummary();
+ }catch(e){
+  staffMode=false;
+  $('admin').hidden=true;
+  $('login').hidden=false;
+  $('loginMsg').textContent='No se pudo ingresar con STAFF: '+e.message+' Podés volver a la Central STAFF o usar el acceso anterior por correo.';
+ }
+})();
 </script></body></html>
