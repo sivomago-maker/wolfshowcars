@@ -91,7 +91,19 @@ db.auth.onAuthStateChange((event,session)=>{
   staffMode=false;
   $('admin').hidden=true;
   $('login').hidden=false;
-  $('loginMsg').textContent='No se pudo ingresar con STAFF: '+e.message+' Podés volver a la Central STAFF o usar el acceso anterior por correo.';
+  if(e.message.includes('Tu función STAFF no permite')){
+   $('login').innerHTML=`
+    <div style="text-align:center;padding:20px 10px">
+     <div style="font-size:65px;margin-bottom:12px">🔒</div>
+     <h2 style="color:#ff6969;font-size:30px">ACCESO DENEGADO</h2>
+     <p class="muted">Tu función STAFF no tiene autorización para controlar el ingreso de stands.</p>
+     <p class="muted">Si necesitás acceder a este módulo, solicitá autorización a un supervisor.</p>
+     <a href="./acceso-staff.html" style="display:inline-block;margin-top:18px;padding:15px 22px;background:#57ff14;color:#071007;border-radius:10px;text-decoration:none;font-weight:900">← VOLVER A CENTRAL STAFF</a>
+    </div>`;
+  }else{
+   $('loginMsg').textContent='No se pudo ingresar con STAFF: '+e.message+' Podés volver a la Central STAFF o usar el acceso anterior por correo.';
+  }
  }
+
 })();
 </script></body></html>
