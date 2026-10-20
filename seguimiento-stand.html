@@ -48,7 +48,7 @@ $('makeCertificate').addEventListener('click',async()=>{
     const [cert,assets]=await Promise.all([api({action:'certificate_assets',code,phone}),api({action:'story_assets',code,phone})]);
     const url=new URL('./seguimiento-stand.html',location.href);
     url.search='?verify='+encodeURIComponent(cert.code)+'&token='+encodeURIComponent(cert.token);
-    const qrUrl=await QRCode.toDataURL(url.href,{width:350,margin:2,errorCorrectionLevel:'M',color:{dark:'#101710',light:'#ffffff'}});
+    const qrUrl=await QRCode.toDataURL(url.href,{width:800,margin:4,errorCorrectionLevel:'M',color:{dark:'#101710',light:'#ffffff'}});
     const [qr,logo]=await Promise.all([loadImage(qrUrl),loadImage(assets.logo_url)]);
     const canvas=$('certificateCanvas'),ctx=canvas.getContext('2d');canvas.width=1200;canvas.height=1697;
     const bg=ctx.createLinearGradient(0,0,1200,1697);bg.addColorStop(0,'#132d18');bg.addColorStop(.55,'#080d0a');bg.addColorStop(1,'#132716');ctx.fillStyle=bg;ctx.fillRect(0,0,1200,1697);
@@ -61,14 +61,14 @@ $('makeCertificate').addEventListener('click',async()=>{
     centeredText(ctx,'Se certifica la reserva de espacio para:',600,577,1050,32,'#b7c2b4');
     ctx.fillStyle='#fff';ctx.fillRect(270,635,660,310);
     const scale=Math.min(610/logo.width,270/logo.height);ctx.drawImage(logo,600-logo.width*scale/2,790-logo.height*scale/2,logo.width*scale,logo.height*scale);
-    centeredText(ctx,cert.business_name.toUpperCase(),600,1010,1060,57);
-    centeredText(ctx,'RESERVA: '+cert.code,600,1090,1050,35,'#57ff14');
+    centeredText(ctx,cert.business_name.toUpperCase(),600,975,1060,57);
+    centeredText(ctx,'RESERVA: '+cert.code,600,1035,1050,35,'#57ff14');
     const days=cert.attendance_days==='both'?'AMBOS DÍAS':cert.attendance_days==='one'?'UN DÍA':'DÍAS SEGÚN RESERVA';
-    centeredText(ctx,'ESPACIO: '+cert.stand_size+'  ·  '+days,600,1160,1050,32);
-    centeredText(ctx,'27 Y 28 DE FEBRERO DE 2027',600,1230,1050,39);
-    centeredText(ctx,'SOCIEDAD RURAL DE ROQUE PÉREZ',600,1290,1050,33,'#b7c2b4');
-    ctx.fillStyle='#fff';ctx.fillRect(465,1340,270,270);ctx.drawImage(qr,480,1355,240,240);
-    centeredText(ctx,'ESCANEÁ PARA VERIFICAR LA RESERVA',600,1630,1050,24,'#b7c2b4');
+    centeredText(ctx,'ESPACIO: '+cert.stand_size+'  ·  '+days,600,1090,1050,32);
+    centeredText(ctx,'27 Y 28 DE FEBRERO DE 2027',600,1140,1050,36);
+    centeredText(ctx,'SOCIEDAD RURAL DE ROQUE PÉREZ',600,1180,1050,29,'#b7c2b4');
+    ctx.fillStyle='#fff';ctx.fillRect(365,1205,470,470);ctx.drawImage(qr,380,1220,440,440);
+    centeredText(ctx,'ESCANEÁ PARA VERIFICAR LA RESERVA',600,1655,1050,19,'#b7c2b4');
     $('downloadCertificate').href=canvas.toDataURL('image/png');$('downloadCertificate').style.display='block';canvas.style.display='block';
     msg.textContent='Certificado listo. El QR permite comprobar en línea que la seña está confirmada.';
   }catch(err){console.error(err);msg.textContent=err.message||'No pudimos generar el certificado.'}finally{button.disabled=false}
