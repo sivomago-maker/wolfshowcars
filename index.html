@@ -820,15 +820,21 @@
     </main>
 
     <!-- CONTADOR DE VISITAS WOLF SHOWCARS -->
-    <section id="wolf-counter" aria-label="Contador de visitas de WOLF SHOWCARS" style="background:#080b08; color:#fff; padding:48px 20px; text-align:center; border-top:1px solid #57ff14;">
-        <div style="max-width:760px; margin:0 auto; border:1px solid rgba(87,255,20,.65); border-radius:18px; padding:30px 20px; box-shadow:0 0 24px rgba(87,255,20,.08);">
-            <p style="margin:0 0 10px; color:#57ff14; font-size:12px; font-weight:800; letter-spacing:3px;">WOLF SHOWCARS · EDICIÓN IV</p>
-            <h2 style="margin:0 0 12px; color:#fff; font-size:clamp(22px,4vw,34px); font-weight:900;">LA MANADA <span style="color:#57ff14;">NO PARA DE CRECER</span></h2>
-            <p style="margin:0 0 18px; color:#c7cfc4; font-size:13px; letter-spacing:2px;">VISITAS TOTALES A LA WEB</p>
-            <div id="wolf-visit-count" style="display:flex; justify-content:center; min-height:76px; align-items:center; color:#57ff14; font-size:32px; font-weight:900;">
-                <span style="font-size:14px; color:#aab3a7; font-weight:500; letter-spacing:1px;">CARGANDO CONTADOR…</span>
+    <section id="wolf-counter" aria-label="Visitas a WOLF SHOWCARS" style="background:#080b08; color:#fff; padding:22px 16px; border-top:1px solid #263b25;">
+        <div style="max-width:760px; margin:0 auto; padding:18px 22px; border:1px solid #344a31; border-radius:16px; background:linear-gradient(135deg,#101810,#0a0e0b); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div aria-hidden="true" style="width:44px; height:44px; flex-shrink:0; border-radius:12px; background:#1b2c19; display:grid; place-items:center; font-size:24px;">🐺</div>
+                <div>
+                    <div style="color:#a1ef54; font-size:11px; font-weight:800; letter-spacing:1.5px;">WOLF SHOWCARS 2027</div>
+                    <div style="color:#f2f5f0; font-size:15px; font-weight:600; margin-top:4px;">La Manada sigue creciendo</div>
+                </div>
             </div>
-            <p style="margin:18px 0 0; color:#aab3a7; font-size:12px;">Cada visita suma a la Manada 🐺</p>
+            <div style="text-align:right; margin-left:auto;">
+                <div id="wolf-visit-count" aria-live="polite" style="color:#a1ef54; font-size:28px; font-weight:900; font-variant-numeric:tabular-nums; min-height:34px;">
+                    <span style="font-size:13px; color:#aab3a7;">Cargando…</span>
+                </div>
+                <div style="color:#a5ada5; font-size:10px; letter-spacing:1.4px; margin-top:3px;">VISITAS A LA WEB</div>
+            </div>
         </div>
     </section>
 
@@ -858,9 +864,9 @@
                         path: 'TOTAL',
                         no_branding: true,
                         style: `
-                            div { background: transparent; border: 0; color: #57ff14; width: auto; height: auto; margin: 0 auto; }
-                            #gcvc-for { color: #c7cfc4; font-size: 12px; }
-                            #gcvc-views { color: #57ff14; font-size: 34px; font-weight: 900; }
+                            div { background: transparent; border: 0; color: #a1ef54; width: auto; height: auto; margin: 0 auto; }
+                            #gcvc-for { display: none; }
+                            #gcvc-views { color: #a1ef54; font-size: 28px; font-weight: 900; }
                             #gcvc-by { display: none; }
                         `
                     });
